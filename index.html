@@ -1,0 +1,2643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Smart Cards - Personal AI Assistant & Business Operating System</title>
+  
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            outfit: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            crimson: {
+              50: '#FFF5F2',
+              100: '#FFE8E2',
+              200: '#FFD3C7',
+              300: '#FFAFA0',
+              400: '#FF6B55',
+              500: '#E5252A',
+              600: '#C0151E',
+              700: '#A10F17',
+              800: '#850C13',
+              900: '#6A090E',
+              deep: '#990D14',
+            },
+            peach: {
+              50: '#FFFBF9',
+              100: '#FFF5F2',
+              200: '#FFECE6',
+              300: '#FFE0D6',
+            }
+          },
+          boxShadow: {
+            'card': '0 10px 25px -5px rgba(192, 21, 30, 0.08), 0 8px 10px -6px rgba(192, 21, 30, 0.04)',
+            'crimson-glow': '0 8px 20px -4px rgba(192, 21, 30, 0.35)',
+            'nav': '0 -4px 20px rgba(0, 0, 0, 0.15)',
+            'popover': '0 20px 40px -10px rgba(0, 0, 0, 0.25)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Smooth Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(254, 242, 242, 0.5);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #fca5a5;
+      border-radius: 9999px;
+    }
+
+    /* Constellation Mesh Background Pattern (Image 1) */
+    .bg-mesh-pattern {
+      background-image: radial-gradient(rgba(229, 37, 42, 0.12) 1.5px, transparent 1.5px),
+                        radial-gradient(rgba(229, 37, 42, 0.06) 1.5px, transparent 1.5px);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+    }
+
+    /* Soundwave animation for Voice Assistant */
+    @keyframes soundwave {
+      0%, 100% { height: 8px; }
+      50% { height: 38px; }
+    }
+    .wave-bar {
+      animation: soundwave 1.2s ease-in-out infinite;
+    }
+    .wave-bar:nth-child(2) { animation-delay: 0.15s; }
+    .wave-bar:nth-child(3) { animation-delay: 0.3s; }
+    .wave-bar:nth-child(4) { animation-delay: 0.45s; }
+    .wave-bar:nth-child(5) { animation-delay: 0.6s; }
+    .wave-bar:nth-child(6) { animation-delay: 0.75s; }
+    .wave-bar:nth-child(7) { animation-delay: 0.9s; }
+
+    /* Pulse Glow */
+    @keyframes softPulse {
+      0%, 100% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.04); opacity: 1; }
+    }
+    .pulse-glow {
+      animation: softPulse 2.5s infinite;
+    }
+    
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="m-0 p-0 w-screen h-screen overflow-hidden bg-slate-950 font-sans text-slate-800 antialiased flex items-center justify-center selection:bg-crimson-500 selection:text-white">
+
+  <!-- ========================================================================= -->
+  <!-- FULL MOBILE APP CONTAINER (Edge-to-Edge on Mobile, Centered Phone on Desktop) -->
+  <!-- ========================================================================= -->
+  <div id="app-container" class="w-full h-full max-w-full sm:max-w-[420px] sm:h-[860px] sm:max-h-[96vh] sm:rounded-[44px] bg-crimson-50 overflow-hidden flex flex-col relative sm:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_0_10px_#1e293b,0_0_0_12px_#334155] sm:border border-slate-700">
+    
+    <!-- ------------------------------------------------------------- -->
+    <!-- 1. MOBILE DEVICE STATUS BAR (Clock, Battery, Wifi matching Image 1) -->
+    <!-- ------------------------------------------------------------- -->
+    <div id="status-bar" class="w-full px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold z-40 select-none text-slate-800 transition-colors duration-300 shrink-0">
+      <div class="flex items-center gap-1.5">
+        <span id="current-time">12:43</span>
+        <i class="fa-solid fa-shield-halved text-[10px] opacity-75"></i>
+        <i class="fa-solid fa-play text-[9px] opacity-75"></i>
+      </div>
+
+      <!-- Centered Notch / Punch Hole Camera -->
+      <div class="w-3.5 h-3.5 bg-slate-950 rounded-full border border-slate-800 flex items-center justify-center">
+        <div class="w-1.5 h-1.5 bg-slate-900 rounded-full"></div>
+      </div>
+
+      <div class="flex items-center gap-2 text-[11px]">
+        <i class="fa-solid fa-signal"></i>
+        <i class="fa-solid fa-wifi"></i>
+        <div class="flex items-center gap-0.5">
+          <span class="text-[10px]">94%</span>
+          <i class="fa-solid fa-battery-full text-xs"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- 2. IN-APP APP-BAR (Visible on inner screens, with Back & 3-Dot ⋮) -->
+    <!-- ------------------------------------------------------------- -->
+    <header id="in-app-header" class="hidden w-full px-4 py-2 bg-white/95 backdrop-blur-md border-b border-rose-100 flex items-center justify-between z-30 transition-all shrink-0">
+      <!-- Left: Workspace Switcher or Back Button -->
+      <div class="flex items-center gap-2">
+        <button id="header-back-btn" onclick="goBack()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-700 flex items-center justify-center text-xs transition shadow-sm border border-slate-200">
+          <i class="fa-solid fa-arrow-left"></i>
+        </button>
+        <div id="header-ws-selector" class="flex items-center bg-slate-100 p-0.5 rounded-full text-[10px] font-bold">
+          <button onclick="setWorkspace('personal')" id="ws-personal" class="px-2 py-0.5 rounded-full text-slate-600 transition">Personal</button>
+          <button onclick="setWorkspace('work')" id="ws-work" class="px-2 py-0.5 rounded-full text-slate-600 transition">Work</button>
+          <button onclick="setWorkspace('business')" id="ws-business" class="px-2 py-0.5 rounded-full bg-crimson-600 text-white shadow-sm transition">Business</button>
+        </div>
+        <span id="header-screen-title" class="hidden font-outfit font-bold text-sm text-slate-900 truncate max-w-[150px]"></span>
+      </div>
+
+      <!-- Right: Search Icon + 3-DOT MENU BUTTON (⋮) -->
+      <div class="flex items-center gap-2">
+        <button onclick="openUniversalSearch()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-crimson-600 flex items-center justify-center text-xs transition shadow-sm border border-slate-200" title="Universal Search (Ctrl+K)">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        
+        <!-- 3-DOT MENU ICON (⋮) -->
+        <button id="three-dot-btn" onclick="toggleThreeDotMenu()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-800 hover:text-crimson-600 flex items-center justify-center text-sm font-bold transition shadow-sm border border-slate-200" title="Menu">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- ------------------------------------------------------------- -->
+    <!-- 3. UNIVERSAL 3-DOT MENU DROPDOWN POPOVER (Accessible Everywhere) -->
+    <!-- ------------------------------------------------------------- -->
+    <div id="three-dot-dropdown" class="hidden absolute right-3 top-14 w-72 bg-white/98 backdrop-blur-xl rounded-2xl shadow-popover border border-rose-200 py-2.5 z-50 animate-in fade-in zoom-in-95 duration-150">
+      <div class="px-4 py-2 border-b border-slate-100 flex items-center justify-between mb-1 bg-rose-50/50 rounded-t-2xl">
+        <div class="flex items-center gap-2">
+          <div class="w-5 h-5 rounded-md bg-crimson-600 text-white flex items-center justify-center text-[10px]">
+            <i class="fa-solid fa-layer-group"></i>
+          </div>
+          <span class="text-xs font-bold text-slate-900">App Screen Navigator</span>
+        </div>
+        <span class="text-[9px] font-bold text-crimson-600 bg-crimson-100 px-1.5 py-0.5 rounded-full">14 Screens</span>
+      </div>
+      
+      <div class="max-h-[460px] overflow-y-auto px-2 space-y-1 text-xs font-semibold">
+        <!-- Section: Core Screens -->
+        <div class="px-2 pt-1 pb-0.5 text-[9px] uppercase font-extrabold text-slate-400 tracking-wider">Core Screens</div>
+        
+        <button onclick="menuJump('login')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-lock text-crimson-500 w-4"></i>
+            <span>1. Login Screen</span>
+          </div>
+          <span class="text-[9px] text-crimson-700 font-bold bg-crimson-100 px-1.5 py-0.2 rounded">Img 1</span>
+        </button>
+
+        <button onclick="menuJump('profile')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-id-card text-crimson-500 w-4"></i>
+            <span>2. Manage Card Details</span>
+          </div>
+          <span class="text-[9px] text-crimson-700 font-bold bg-crimson-100 px-1.5 py-0.2 rounded">Img 2</span>
+        </button>
+
+        <button onclick="menuJump('dashboard')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-gauge-high text-crimson-600 w-4"></i>
+            <span>3. Executive Dashboard</span>
+          </div>
+          <span class="text-[9px] text-slate-400 font-normal">Hub</span>
+        </button>
+
+        <!-- Section: AI Agents -->
+        <div class="px-2 pt-2 pb-0.5 text-[9px] uppercase font-extrabold text-slate-400 tracking-wider border-t border-slate-100">AI Agents & Speech</div>
+
+        <button onclick="menuJump('agents')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-purple-50 hover:text-purple-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-network-wired text-purple-600 w-4"></i>
+            <span>4. 10 AI Agents Mesh</span>
+          </div>
+          <span class="text-[9px] text-purple-700 font-bold bg-purple-100 px-1.5 py-0.2 rounded">Sec 16</span>
+        </button>
+
+        <button onclick="menuJump('voice')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-microphone text-crimson-500 w-4"></i>
+            <span>5. Voice AI (English / தமிழ்)</span>
+          </div>
+          <span class="text-[9px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.2 rounded">TTS</span>
+        </button>
+
+        <!-- Section: Productivity & Tools -->
+        <div class="px-2 pt-2 pb-0.5 text-[9px] uppercase font-extrabold text-slate-400 tracking-wider border-t border-slate-100">Productivity & Docs</div>
+
+        <button onclick="menuJump('calendar')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-calendar-days text-crimson-500 w-4"></i>
+            <span>6. Calendar & Smart Tasks</span>
+          </div>
+          <span class="text-[9px] text-slate-400 font-normal">Agenda</span>
+        </button>
+
+        <button onclick="menuJump('emails')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-amber-50 hover:text-amber-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-inbox text-amber-500 w-4"></i>
+            <span>7. Smart Inbox & AI Triage</span>
+          </div>
+          <span class="text-[9px] text-amber-700 font-bold bg-amber-100 px-1.5 py-0.2 rounded">VIP</span>
+        </button>
+
+        <button onclick="menuJump('vault')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-blue-50 hover:text-blue-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-file-shield text-blue-500 w-4"></i>
+            <span>8. Document Vault & RAG Q&A</span>
+          </div>
+          <span class="text-[9px] text-blue-700 font-bold bg-blue-100 px-1.5 py-0.2 rounded">OCR</span>
+        </button>
+
+        <button onclick="menuJump('focus')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-indigo-50 hover:text-indigo-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-stopwatch text-indigo-500 w-4"></i>
+            <span>9. Pomodoro Focus & Habits</span>
+          </div>
+          <span class="text-[9px] text-indigo-700 font-bold bg-indigo-100 px-1.5 py-0.2 rounded">25:00</span>
+        </button>
+
+        <!-- Section: Business OS -->
+        <div class="px-2 pt-2 pb-0.5 text-[9px] uppercase font-extrabold text-slate-400 tracking-wider border-t border-slate-100">Business Automation</div>
+
+        <button onclick="menuJump('invoices')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-emerald-50 hover:text-emerald-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-file-invoice-dollar text-emerald-600 w-4"></i>
+            <span>10. Invoices & Business Finance</span>
+          </div>
+          <span class="text-[9px] text-emerald-700 font-bold bg-emerald-100 px-1.5 py-0.2 rounded">GST</span>
+        </button>
+
+        <button onclick="menuJump('marketplace')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-orange-50 hover:text-orange-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-shapes text-orange-500 w-4"></i>
+            <span>11. 10 Workflow Marketplace</span>
+          </div>
+          <span class="text-[9px] text-orange-700 font-bold bg-orange-100 px-1.5 py-0.2 rounded">Auto</span>
+        </button>
+
+        <button onclick="menuJump('team')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-teal-50 hover:text-teal-700 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-users text-teal-600 w-4"></i>
+            <span>12. Team & Approvals</span>
+          </div>
+          <span class="text-[9px] text-teal-700 font-bold bg-teal-100 px-1.5 py-0.2 rounded">Collab</span>
+        </button>
+
+        <button onclick="menuJump('phonecall')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-rose-50 hover:text-crimson-600 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-phone-volume text-rose-500 w-4"></i>
+            <span>13. Telephony Call Simulator</span>
+          </div>
+          <span class="text-[9px] text-rose-700 font-bold bg-rose-100 px-1.5 py-0.2 rounded">Live</span>
+        </button>
+
+        <button onclick="menuJump('settings')" class="w-full flex items-center justify-between px-3 py-2 rounded-xl text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition text-left">
+          <div class="flex items-center gap-2.5">
+            <i class="fa-solid fa-gear text-slate-500 w-4"></i>
+            <span>14. Settings & Privacy Purge</span>
+          </div>
+          <span class="text-[9px] text-slate-400 font-normal">GDPR</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Backdrop for closing 3-dot dropdown when clicking outside -->
+    <div id="dropdown-backdrop" onclick="toggleThreeDotMenu()" class="hidden fixed inset-0 z-40 bg-black/10 backdrop-blur-[1px]"></div>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 1: LOGIN & AUTH (EXACT RECREATION OF IMAGE 1) -->
+    <!-- ========================================================================= -->
+    <section id="screen-login" class="screen-view flex-1 flex flex-col justify-between relative overflow-y-auto px-6 pt-2 pb-6">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-40 z-0"></div>
+      
+      <!-- Geometric Constellation SVG Graphic at bottom (Image 1) -->
+      <svg class="absolute bottom-0 left-0 right-0 w-full h-80 pointer-events-none opacity-45 z-0" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M40 280L120 220L210 260L320 190L370 240M120 220L190 140L280 170L320 190M40 280L190 140M210 260L280 170M50 170L120 220M280 170L380 130M190 140L260 70M260 70L340 100M340 100L380 130" stroke="#E5252A" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="40" cy="280" r="4" fill="#C0151E"/>
+        <circle cx="120" cy="220" r="4.5" fill="#E5252A"/>
+        <circle cx="210" cy="260" r="3.5" fill="#E5252A"/>
+        <circle cx="320" cy="190" r="4.5" fill="#C0151E"/>
+        <circle cx="370" cy="240" r="4" fill="#E5252A"/>
+        <circle cx="190" cy="140" r="5" fill="#C0151E"/>
+        <circle cx="280" cy="170" r="4" fill="#E5252A"/>
+        <circle cx="260" cy="70" r="3.5" fill="#C0151E"/>
+        <circle cx="340" cy="100" r="3.5" fill="#E5252A"/>
+        <circle cx="380" cy="130" r="4" fill="#C0151E"/>
+      </svg>
+
+      <!-- Top Bar on Login Screen: Brand Logo & 3-Dot Menu Button (⋮) -->
+      <div class="relative z-10 flex items-center justify-between pt-1">
+        <div class="flex items-center gap-2">
+          <div class="w-10 h-10 bg-crimson-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-crimson-600/30">
+            <div class="w-6 h-6 border-2 border-white rounded-md flex flex-col items-center justify-center relative">
+              <div class="flex gap-1 mt-0.5">
+                <div class="w-1 h-1 bg-white rounded-full"></div>
+                <div class="w-1 h-1 bg-white rounded-full"></div>
+              </div>
+              <div class="w-2.5 h-1 border-b-2 border-white rounded-full mt-0.5"></div>
+            </div>
+          </div>
+          <div class="text-left">
+            <span class="block font-outfit font-extrabold text-base leading-none text-crimson-600 tracking-tight">SMART</span>
+            <span class="block font-outfit font-extrabold text-base leading-none text-crimson-600 tracking-tight">CARDS</span>
+          </div>
+        </div>
+
+        <!-- 3-DOT ICON BUTTON (⋮) ON LOGIN SCREEN -->
+        <button onclick="toggleThreeDotMenu()" class="flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/90 backdrop-blur-md border border-rose-200 text-xs font-bold text-crimson-700 shadow-sm hover:bg-rose-50 transition">
+          <i class="fa-solid fa-ellipsis-vertical text-sm"></i>
+          <span>Screens</span>
+        </button>
+      </div>
+
+      <!-- Heading -->
+      <div class="relative z-10 text-left pt-6 pb-2">
+        <span class="font-outfit uppercase tracking-widest text-[11px] font-bold text-crimson-700 block mb-1">USER ACCESS</span>
+        <h2 class="font-outfit text-4xl font-extrabold text-slate-900 tracking-tight">Login</h2>
+      </div>
+
+      <!-- Login Floating Card (Image 1 Style) -->
+      <div class="relative z-10 bg-white/95 backdrop-blur-md rounded-[28px] p-5 shadow-card border border-rose-100 my-auto">
+        <div class="flex items-center justify-between mb-3">
+          <label class="font-semibold text-slate-800 text-sm">Mobile Number</label>
+          
+          <!-- WhatsApp Quick Toggle Switch (Image 1) -->
+          <div class="flex items-center gap-1.5 bg-slate-100 p-1 rounded-full cursor-pointer transition select-none" id="whatsapp-toggle" onclick="toggleWhatsApp()">
+            <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center text-xs shadow-sm">
+              <i class="fa-brands fa-whatsapp"></i>
+            </div>
+            <div id="toggle-indicator" class="w-4 h-4 rounded-full bg-slate-300 transition-transform"></div>
+          </div>
+        </div>
+
+        <!-- Country Selector & Number Input (Image 1) -->
+        <div class="relative flex items-center bg-slate-50 border border-slate-200 rounded-2xl p-1.5 focus-within:ring-2 focus-within:ring-crimson-500/20 focus-within:border-crimson-500 transition">
+          <button type="button" onclick="toggleCountryDropdown()" class="flex items-center gap-1.5 px-3 py-2 bg-white rounded-xl border border-slate-200 text-sm font-semibold text-slate-800 hover:bg-slate-50 transition shadow-sm">
+            <span id="selected-flag">🇮🇳</span>
+            <span id="selected-dial">+91</span>
+            <i class="fa-solid fa-chevron-down text-[10px] text-slate-400"></i>
+          </button>
+
+          <input id="mobile-input" type="tel" placeholder="Enter 10-digit mobile number" class="w-full bg-transparent px-3 py-2 text-sm text-slate-800 font-medium placeholder-slate-400 focus:outline-none" value="98401 23456">
+        </div>
+
+        <!-- Country Dropdown Overlay Modal (Image 1 Recreated) -->
+        <div id="country-dropdown" class="hidden absolute top-20 left-4 z-40 w-60 bg-white rounded-2xl shadow-2xl border border-rose-100 py-2 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+          <div class="px-3 py-1.5 text-[10px] uppercase font-bold text-slate-400 tracking-wider">Select Country</div>
+          <div class="max-h-56 overflow-y-auto">
+            <button onclick="selectCountry('🇮🇳', '+91', 'India')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-800 transition">
+              <div class="flex items-center gap-2"><span>🇮🇳</span><span class="font-medium">India</span></div>
+              <div class="flex items-center gap-1 font-bold text-crimson-600"><span>+91</span><i class="fa-solid fa-check text-[10px]"></i></div>
+            </button>
+            <button onclick="selectCountry('🇦🇪', '+971', 'UAE')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇦🇪</span><span>UAE</span></div>
+              <span class="text-slate-400">+971</span>
+            </button>
+            <button onclick="selectCountry('🇺🇸', '+1', 'United States')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇺🇸</span><span>United States</span></div>
+              <span class="text-slate-400">+1</span>
+            </button>
+            <button onclick="selectCountry('🇬🇧', '+44', 'United Kingdom')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇬🇧</span><span>United Kingdom</span></div>
+              <span class="text-slate-400">+44</span>
+            </button>
+            <button onclick="selectCountry('🇸🇬', '+65', 'Singapore')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇸🇬</span><span>Singapore</span></div>
+              <span class="text-slate-400">+65</span>
+            </button>
+            <button onclick="selectCountry('🇸🇦', '+966', 'Saudi Arabia')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇸🇦</span><span>Saudi Arabia</span></div>
+              <span class="text-slate-400">+966</span>
+            </button>
+            <button onclick="selectCountry('🇶🇦', '+974', 'Qatar')" class="w-full flex items-center justify-between px-3 py-2 text-xs hover:bg-rose-50 text-slate-600 transition">
+              <div class="flex items-center gap-2"><span>🇶🇦</span><span>Qatar</span></div>
+              <span class="text-slate-400">+974</span>
+            </button>
+          </div>
+        </div>
+
+        <p class="text-[11px] text-crimson-600 font-medium mt-2.5 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-exclamation text-[10px]"></i>
+          <span>* Please ensure phone is reachable for OTP.</span>
+        </p>
+
+        <!-- Send OTP Button -->
+        <button onclick="triggerLoginOtp()" class="w-full mt-4 bg-gradient-to-r from-crimson-600 to-crimson-700 hover:from-crimson-700 hover:to-crimson-deep text-white font-semibold py-3.5 px-4 rounded-2xl shadow-crimson-glow transition duration-200 flex items-center justify-center gap-2">
+          <span>Send Secure OTP</span>
+          <i class="fa-solid fa-arrow-right text-xs"></i>
+        </button>
+
+        <!-- Quick 1-Click Demo Login Shortcut -->
+        <button onclick="quickDemoLogin()" class="w-full mt-2.5 bg-rose-50 hover:bg-rose-100 text-crimson-700 font-bold py-2.5 px-4 rounded-xl border border-rose-200 transition text-xs flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-bolt text-amber-500"></i>
+          <span>1-Click Instant Demo Login</span>
+        </button>
+      </div>
+
+      <div class="relative z-10 text-center text-xs text-slate-500 pt-2">
+        <span>By proceeding you agree to encrypted access & privacy policies.</span>
+      </div>
+
+      <!-- OTP Verification Bottom Sheet Modal -->
+      <div id="otp-modal" class="hidden absolute inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-end justify-center">
+        <div class="w-full bg-white rounded-t-[32px] p-6 shadow-2xl border-t border-rose-100 animate-in slide-in-from-bottom duration-200">
+          <div class="flex justify-between items-center mb-3">
+            <span class="text-xs uppercase font-bold text-crimson-600 tracking-wider">Two-Factor Authentication</span>
+            <button onclick="closeOtpModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-500 hover:bg-rose-50 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+          </div>
+          <h3 class="font-outfit text-xl font-bold text-slate-900 mb-1">Verify Mobile Number</h3>
+          <p class="text-xs text-slate-500 mb-4">Enter 6-digit code sent to <strong id="verify-number-display">+91 98401 23456</strong></p>
+          
+          <div class="flex justify-between gap-1.5 mb-5">
+            <input type="text" maxlength="1" value="7" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+            <input type="text" maxlength="1" value="3" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+            <input type="text" maxlength="1" value="9" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+            <input type="text" maxlength="1" value="2" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+            <input type="text" maxlength="1" value="0" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+            <input type="text" maxlength="1" value="4" class="w-11 h-12 text-center text-lg font-bold bg-slate-50 border border-slate-200 rounded-xl focus:border-crimson-500 focus:outline-none">
+          </div>
+
+          <div class="flex items-center justify-between text-xs text-slate-500 mb-4">
+            <span>Resend code in: <strong class="text-crimson-600">00:28s</strong></span>
+            <button onclick="showToast('OTP resent via SMS/WhatsApp')" class="font-semibold text-crimson-600 hover:underline">Resend Now</button>
+          </div>
+
+          <button onclick="completeAuthentication()" class="w-full bg-crimson-600 hover:bg-crimson-700 text-white font-semibold py-3.5 rounded-2xl shadow-crimson-glow flex items-center justify-center gap-2">
+            <i class="fa-solid fa-check"></i>
+            <span>Verify & Enter Platform</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 2: MANAGE CARD DETAILS (EXACT RECREATION OF IMAGE 2) -->
+    <!-- ========================================================================= -->
+    <section id="screen-profile" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <!-- Deep Rich Red Gradient Header Banner (Image 2) -->
+      <div class="relative z-10 bg-gradient-to-b from-crimson-deep via-crimson-700 to-crimson-600 px-5 pt-2 pb-8 text-white rounded-b-[36px] shadow-lg">
+        <div class="flex items-center justify-between mb-4">
+          <!-- Back button -->
+          <button onclick="switchScreen('dashboard')" class="w-9 h-9 rounded-full bg-black/20 hover:bg-black/30 flex items-center justify-center text-white transition">
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+          </button>
+          
+          <h2 class="font-outfit font-bold text-base tracking-wide">Manage Card Details</h2>
+          
+          <!-- 3-Dot Icon Button (⋮) ON PROFILE SCREEN (Image 2) -->
+          <div class="flex items-center gap-2">
+            <button onclick="toggleThreeDotMenu()" class="w-9 h-9 rounded-full bg-black/20 hover:bg-black/30 text-white flex items-center justify-center text-sm font-bold transition" title="Menu">
+              <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <div class="w-8 h-8 rounded-full border-2 border-amber-400 overflow-hidden shadow-sm">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&h=120&q=80" alt="Avatar" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Hero with Avatar & Camera Badge (Image 2) -->
+        <div class="flex flex-col items-center text-center mt-2">
+          <div class="relative mb-2">
+            <div class="w-20 h-20 rounded-full border-4 border-white/90 overflow-hidden shadow-xl bg-slate-200">
+              <img id="card-avatar-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&h=200&q=80" alt="Remakanth R" class="w-full h-full object-cover">
+            </div>
+            <button onclick="triggerPhotoUpload('avatar')" class="absolute bottom-0 right-0 w-6 h-6 rounded-full bg-crimson-600 border-2 border-white text-white flex items-center justify-center text-[10px] shadow-md hover:bg-crimson-700">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+
+          <h3 id="card-person-name" class="font-outfit font-bold text-xl tracking-tight text-white">Remakanth R</h3>
+          <p id="card-person-role" class="text-xs text-rose-100 font-medium">Chief Evangelist</p>
+        </div>
+      </div>
+
+      <!-- Body Content: Company & Professional Details (Image 2) -->
+      <div class="relative z-10 px-5 -mt-4 space-y-4">
+        
+        <!-- Company Logo Badge Card (Image 2) -->
+        <div class="bg-white rounded-2xl p-4 shadow-card border border-rose-100 flex flex-col items-center text-center relative">
+          <div class="relative mb-1">
+            <div class="flex items-center gap-1.5 px-4 py-2 border border-slate-100 rounded-xl bg-slate-50/80">
+              <span class="w-3 h-3 rounded-full bg-crimson-600 flex items-center justify-center text-white text-[8px]"><i class="fa-solid fa-wifi"></i></span>
+              <span class="font-outfit font-extrabold text-xl text-slate-800 tracking-wider">antz</span>
+              <span class="text-xs font-bold text-crimson-600 tracking-widest uppercase">MEDIA</span>
+            </div>
+            <button onclick="triggerPhotoUpload('company')" class="absolute -bottom-1 -right-2 w-5 h-5 rounded-full bg-crimson-600 border-2 border-white text-white flex items-center justify-center text-[9px] shadow-sm">
+              <i class="fa-solid fa-camera"></i>
+            </button>
+          </div>
+          <h4 id="card-company-name" class="font-outfit font-bold text-slate-900 text-sm mt-1">Antz Media Digital</h4>
+        </div>
+
+        <!-- Professional Details Card (Image 2) -->
+        <div class="bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+            <span class="font-outfit text-[11px] font-bold uppercase tracking-wider text-slate-400">Professional Details</span>
+            <button onclick="openEditProfessionalModal()" class="flex items-center gap-1 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-rose-50 hover:text-crimson-600 px-2.5 py-1 rounded-full border border-slate-200 transition">
+              <i class="fa-solid fa-pen text-[10px]"></i>
+              <span>Edit</span>
+            </button>
+          </div>
+
+          <div class="flex items-center justify-between py-2 border-b border-slate-50">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-building"></i>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 font-medium block">Organisation</span>
+                <span id="detail-org" class="text-xs font-semibold text-slate-800">Antz Media Digital</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+          </div>
+
+          <div class="flex items-center justify-between pt-2">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm">
+                <i class="fa-solid fa-briefcase"></i>
+              </div>
+              <div>
+                <span class="text-[10px] text-slate-400 font-medium block">Designation</span>
+                <span id="detail-desig" class="text-xs font-semibold text-slate-800">Chief Evangelist</span>
+              </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-xs text-slate-300"></i>
+          </div>
+        </div>
+
+        <!-- Professional Address Card (Image 2) -->
+        <div class="bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-outfit text-[11px] font-bold uppercase tracking-wider text-slate-400">Professional Address</span>
+            <button onclick="openEditAddressModal()" class="flex items-center gap-1 text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-rose-50 hover:text-crimson-600 px-2.5 py-1 rounded-full border border-slate-200 transition">
+              <i class="fa-solid fa-pen text-[10px]"></i>
+              <span>Edit</span>
+            </button>
+          </div>
+          <div class="flex items-start gap-3 pt-1">
+            <div class="w-8 h-8 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-sm shrink-0">
+              <i class="fa-solid fa-location-dot"></i>
+            </div>
+            <div>
+              <p id="detail-address" class="text-xs font-medium text-slate-700 leading-relaxed">Level 4, Antz Tech Hub, T. Nagar, Chennai, Tamil Nadu 600017</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Digital Smart Card & Sharing (Image 2) -->
+        <div class="bg-gradient-to-br from-crimson-50 to-rose-100/60 rounded-2xl p-4 border border-rose-200 flex items-center justify-between">
+          <div>
+            <span class="text-[11px] font-bold text-crimson-800 block">NFC Smart Card Connected</span>
+            <p class="text-[11px] text-slate-600">ID: SC-89241 • Tap-to-Share Ready</p>
+          </div>
+          <button onclick="openShareCardModal()" class="bg-crimson-600 hover:bg-crimson-700 text-white text-xs px-3.5 py-2 rounded-xl font-medium shadow-sm flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-qrcode"></i>
+            <span>Share Card</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 3: DASHBOARD & OPERATING BRIEFING -->
+    <!-- ========================================================================= -->
+    <section id="screen-dashboard" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <!-- Top User Greeting -->
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-crimson-600 to-crimson-deep p-0.5 shadow-md">
+            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=120&h=120&q=80" alt="Remakanth" class="w-full h-full object-cover rounded-[14px]">
+          </div>
+          <div>
+            <span id="current-ws-badge" class="text-[9px] uppercase font-bold tracking-wider text-crimson-700 bg-crimson-100 px-2 py-0.2 rounded-full">Business Workspace</span>
+            <h3 class="font-outfit font-bold text-slate-900 text-sm">Hello, Remakanth</h3>
+          </div>
+        </div>
+        <div class="flex items-center gap-1.5">
+          <button onclick="switchScreen('agents')" class="w-8 h-8 rounded-xl bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center text-xs shadow-sm hover:scale-105 transition" title="10 AI Agents Mesh">
+            <i class="fa-solid fa-network-wired"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Morning AI Briefing Banner -->
+      <div class="relative z-10 bg-gradient-to-r from-crimson-700 to-crimson-deep rounded-2xl p-4 text-white shadow-crimson-glow mb-3">
+        <div class="flex items-start justify-between">
+          <div class="flex items-center gap-2 mb-1.5">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+            <span class="text-[10px] uppercase font-bold tracking-wider text-rose-200">Daily Operating Briefing</span>
+          </div>
+          <span class="text-[10px] text-rose-200 font-medium">Oct 26 • Mon</span>
+        </div>
+        <p id="briefing-content" class="text-xs text-white/95 font-medium leading-relaxed mb-3">
+          "Antz Media has <strong>3 critical follow-ups</strong>, 1 vendor invoice due Nov 15, and 2 inbound VIP emails awaiting approval."
+        </p>
+        <div class="flex items-center gap-2">
+          <button onclick="playMorningBriefing()" class="bg-white/20 hover:bg-white/30 text-white text-[11px] font-semibold px-3 py-1.5 rounded-xl backdrop-blur-sm flex items-center gap-1.5 transition">
+            <i class="fa-solid fa-volume-high text-xs"></i>
+            <span>Listen Audio</span>
+          </button>
+          <button onclick="switchScreen('calendar')" class="bg-white text-crimson-700 hover:bg-rose-50 text-[11px] font-bold px-3 py-1.5 rounded-xl transition shadow-sm">
+            Agenda
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Action Floating Chips -->
+      <div class="relative z-10 flex gap-2 overflow-x-auto no-scrollbar py-1 mb-3">
+        <button onclick="openNewTaskModal()" class="px-3 py-1.5 rounded-full bg-white border border-rose-200 text-xs font-semibold text-slate-700 shadow-sm whitespace-nowrap hover:bg-rose-50 flex items-center gap-1.5">
+          <i class="fa-solid fa-plus text-crimson-600"></i>
+          <span>Add Task</span>
+        </button>
+        <button onclick="switchScreen('voice')" class="px-3 py-1.5 rounded-full bg-white border border-rose-200 text-xs font-semibold text-slate-700 shadow-sm whitespace-nowrap hover:bg-rose-50 flex items-center gap-1.5">
+          <i class="fa-solid fa-microphone text-crimson-600"></i>
+          <span>Voice Prompt</span>
+        </button>
+        <button onclick="openNewInvoiceModal()" class="px-3 py-1.5 rounded-full bg-white border border-rose-200 text-xs font-semibold text-slate-700 shadow-sm whitespace-nowrap hover:bg-rose-50 flex items-center gap-1.5">
+          <i class="fa-solid fa-file-invoice text-emerald-600"></i>
+          <span>New Invoice</span>
+        </button>
+        <button onclick="triggerSimulatedPhoneCall()" class="px-3 py-1.5 rounded-full bg-white border border-rose-200 text-xs font-semibold text-slate-700 shadow-sm whitespace-nowrap hover:bg-rose-50 flex items-center gap-1.5">
+          <i class="fa-solid fa-phone text-rose-500"></i>
+          <span>Test Call</span>
+        </button>
+      </div>
+
+      <!-- Live Metric Grid -->
+      <div class="relative z-10 grid grid-cols-2 gap-3 mb-3">
+        <div onclick="switchScreen('calendar')" class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 cursor-pointer hover:border-crimson-200 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] uppercase font-bold text-slate-400">Scheduled</span>
+            <div class="w-6 h-6 rounded-lg bg-rose-50 text-crimson-600 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+          </div>
+          <span id="metric-tasks" class="font-outfit font-extrabold text-xl text-slate-900 block">4 Tasks</span>
+          <span class="text-[10px] text-slate-500">Next: Antz Review (2:30 PM)</span>
+        </div>
+
+        <div onclick="switchScreen('emails')" class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 cursor-pointer hover:border-crimson-200 transition">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] uppercase font-bold text-slate-400">Smart Inbox</span>
+            <div class="w-6 h-6 rounded-lg bg-amber-50 text-amber-600 flex items-center justify-center text-xs">
+              <i class="fa-solid fa-envelope-open-text"></i>
+            </div>
+          </div>
+          <span id="metric-emails" class="font-outfit font-extrabold text-xl text-slate-900 block">2 Actionable</span>
+          <span class="text-[10px] text-amber-600 font-semibold">1 VIP Escalation</span>
+        </div>
+      </div>
+
+      <!-- Quick AI Agents Status Bar -->
+      <div class="relative z-10 bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800">10 AI Agents Mesh</span>
+          <button onclick="switchScreen('agents')" class="text-[11px] font-bold text-crimson-600 hover:underline">View All (10)</button>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-center text-[10px]">
+          <div onclick="runAgentSimulation('Voice & Telephony Agent')" class="p-2 rounded-xl bg-rose-50/60 hover:bg-rose-100 cursor-pointer transition">
+            <i class="fa-solid fa-phone text-crimson-600 text-sm mb-1 block"></i>
+            <span class="font-semibold text-slate-700 block truncate">Telephony</span>
+            <span class="text-[8px] text-emerald-600 font-bold">Online</span>
+          </div>
+          <div onclick="runAgentSimulation('Email & Inbox Agent')" class="p-2 rounded-xl bg-amber-50/60 hover:bg-amber-100 cursor-pointer transition">
+            <i class="fa-solid fa-envelope text-amber-600 text-sm mb-1 block"></i>
+            <span class="font-semibold text-slate-700 block truncate">Email AI</span>
+            <span class="text-[8px] text-emerald-600 font-bold">Active</span>
+          </div>
+          <div onclick="runAgentSimulation('Document RAG Agent')" class="p-2 rounded-xl bg-blue-50/60 hover:bg-blue-100 cursor-pointer transition">
+            <i class="fa-solid fa-file-shield text-blue-600 text-sm mb-1 block"></i>
+            <span class="font-semibold text-slate-700 block truncate">RAG Vault</span>
+            <span class="text-[8px] text-emerald-600 font-bold">Ready</span>
+          </div>
+          <div onclick="runAgentSimulation('Finance & Invoicing Agent')" class="p-2 rounded-xl bg-emerald-50/60 hover:bg-emerald-100 cursor-pointer transition">
+            <i class="fa-solid fa-file-invoice-dollar text-emerald-600 text-sm mb-1 block"></i>
+            <span class="font-semibold text-slate-700 block truncate">Invoices</span>
+            <span class="text-[8px] text-emerald-600 font-bold">Idle</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Today's Priority Feed -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800">Priority Action Queue</span>
+          <span class="text-[10px] text-slate-400">Escalations Enabled</span>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <input type="checkbox" onchange="toggleTaskDone(this, 'Submit Quarterly Report')" class="w-4 h-4 rounded text-crimson-600 focus:ring-crimson-500 cursor-pointer">
+              <div>
+                <span class="text-xs font-semibold text-slate-800 block">Submit Antz Media Quarterly Report</span>
+                <span class="text-[10px] text-slate-400">Due Today, 2:30 PM • High Priority</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold text-crimson-700 bg-rose-100 px-1.5 py-0.5 rounded">Urgent</span>
+          </div>
+
+          <div class="flex items-center justify-between p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2.5">
+              <input type="checkbox" onchange="toggleTaskDone(this, 'Review VIP Email')" class="w-4 h-4 rounded text-crimson-600 focus:ring-crimson-500 cursor-pointer">
+              <div>
+                <span class="text-xs font-semibold text-slate-800 block">Review VIP Email: Q4 Contract Renewal</span>
+                <span class="text-[10px] text-slate-400">AI Draft Ready for One-Click Approval</span>
+              </div>
+            </div>
+            <button onclick="switchScreen('emails')" class="text-[10px] font-bold text-crimson-600 hover:underline">Review</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 4: 10 AI AGENTS MESH (SECTION 16) -->
+    <!-- ========================================================================= -->
+    <section id="screen-agents" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">10 AI Agents Mesh</h3>
+        </div>
+        <span class="text-[10px] font-bold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">Section 16 Spec</span>
+      </div>
+
+      <p class="relative z-10 text-xs text-slate-600 mb-3">
+        Autonomous specialized agents interacting via secure IPC event bus with prompt injection containment.
+      </p>
+
+      <!-- Agents Grid (All 10 Specialized Agents from Section 16) -->
+      <div class="relative z-10 space-y-2.5">
+        
+        <!-- 1. Voice Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-rose-50 text-crimson-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-microphone-lines"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Voice & Telephony Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Bilingual STT/TTS (Tamil & English)</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Voice & Telephony Agent')" class="px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-crimson-700 text-[10px] font-bold rounded-lg border border-rose-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 2. Email Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Email & Inbox Triage Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Contextual draft reply generation</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Email & Inbox Agent')" class="px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-700 text-[10px] font-bold rounded-lg border border-amber-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 3. RAG Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-file-shield"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Document RAG & Vault Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">pgvector semantic search & OCR</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Document RAG Agent')" class="px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[10px] font-bold rounded-lg border border-blue-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 4. Calendar Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-crimson-50 text-crimson-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-calendar-check"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Calendar & Escalation Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Schedule conflicts & auto-call alerts</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Calendar Escalation Agent')" class="px-2.5 py-1 bg-crimson-50 hover:bg-crimson-100 text-crimson-700 text-[10px] font-bold rounded-lg border border-rose-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 5. Invoicing Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Invoicing & Expense Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">GST computation & WhatsApp delivery</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Invoicing Agent')" class="px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-700 text-[10px] font-bold rounded-lg border border-emerald-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 6. Pomodoro Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-stopwatch"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Pomodoro & Habit Coach</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Focus cycles & streak notifications</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Pomodoro Coach Agent')" class="px-2.5 py-1 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[10px] font-bold rounded-lg border border-indigo-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 7. Team Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-users-gear"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Team Collab & Approvals Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Expense approvals & delegation</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Team Collab Agent')" class="px-2.5 py-1 bg-teal-50 hover:bg-teal-100 text-teal-700 text-[10px] font-bold rounded-lg border border-teal-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 8. Search Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Universal Search Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Hybrid keyword & vector indexer</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Universal Search Agent')" class="px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-[10px] font-bold rounded-lg border border-slate-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 9. Workflow Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-gears"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Workflow Automation Agent</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">10 prebuilt automated pipelines</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Workflow Automation Agent')" class="px-2.5 py-1 bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold rounded-lg border border-orange-200">
+            Run Agent
+          </button>
+        </div>
+
+        <!-- 10. Security Agent -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-red-50 text-red-600 flex items-center justify-center text-base">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-bold text-xs text-slate-800">Security & Privacy Guard</span>
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+              </div>
+              <span class="text-[10px] text-slate-500 block">Prompt injection tag filter & audit</span>
+            </div>
+          </div>
+          <button onclick="runAgentSimulation('Security Guard Agent')" class="px-2.5 py-1 bg-red-50 hover:bg-red-100 text-red-700 text-[10px] font-bold rounded-lg border border-red-200">
+            Run Agent
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 5: BILINGUAL VOICE ASSISTANT (ENGLISH / தமிழ்) -->
+    <!-- ========================================================================= -->
+    <section id="screen-voice" class="screen-view hidden flex-1 flex flex-col justify-between relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Voice Assistant</h3>
+        </div>
+        
+        <!-- Language Switcher: English vs. Tamil -->
+        <div class="flex items-center bg-white border border-rose-200 rounded-full p-1 text-xs font-bold shadow-sm">
+          <button id="lang-en" onclick="setLanguage('en')" class="px-2.5 py-1 rounded-full bg-crimson-600 text-white shadow-sm transition">English</button>
+          <button id="lang-ta" onclick="setLanguage('ta')" class="px-2.5 py-1 rounded-full text-slate-600 transition">தமிழ்</button>
+        </div>
+      </div>
+
+      <!-- Live Voice Visualizer & Mic Area -->
+      <div class="relative z-10 my-auto flex flex-col items-center text-center py-4">
+        
+        <!-- Sound Wave Visualizer Bars -->
+        <div class="flex items-center justify-center gap-1.5 h-14 mb-4">
+          <div class="w-1.5 bg-crimson-400 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-500 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-600 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-700 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-600 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-500 rounded-full wave-bar"></div>
+          <div class="w-1.5 bg-crimson-400 rounded-full wave-bar"></div>
+        </div>
+
+        <!-- Big Mic Button -->
+        <div class="relative mb-3">
+          <div class="absolute -inset-3 bg-crimson-500/20 rounded-full blur-md pulse-glow"></div>
+          <button onclick="toggleMicRecording()" class="relative w-20 h-20 rounded-full bg-gradient-to-tr from-crimson-deep via-crimson-600 to-crimson-500 text-white flex items-center justify-center text-2xl shadow-crimson-glow hover:scale-105 active:scale-95 transition">
+            <i id="mic-icon" class="fa-solid fa-microphone"></i>
+          </button>
+        </div>
+
+        <span id="voice-status-text" class="text-xs font-semibold text-slate-600 block">Tap microphone to speak or choose a command</span>
+
+        <!-- Live STT Transcript Display -->
+        <div class="w-full bg-white rounded-2xl p-4 shadow-card border border-rose-100 mt-4 text-left">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1">Live Transcript (Whisper AI)</span>
+          <p id="stt-transcript" class="text-xs font-semibold text-slate-800 italic leading-relaxed">
+            "Remind me to call the customer tomorrow at 10 AM regarding contract review"
+          </p>
+        </div>
+
+        <!-- Parsed Intent Result Card -->
+        <div id="intent-card" class="w-full bg-crimson-50/70 rounded-2xl p-3.5 border border-rose-200 mt-3 text-left">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold uppercase text-crimson-700">Identified Intent</span>
+            <span class="text-[10px] font-semibold text-emerald-600"><i class="fa-solid fa-circle-check"></i> 99% Confidence</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">Action</span>
+              <span class="font-bold text-slate-800">Task Creation</span>
+            </div>
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">Time</span>
+              <span class="font-bold text-slate-800">Tomorrow 10:00 AM</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Quick Command Chips -->
+      <div class="relative z-10 space-y-1.5 pt-2">
+        <span class="text-[10px] uppercase font-bold text-slate-400 block">Sample Voice Prompts (Click to Run)</span>
+        <div class="flex flex-wrap gap-1.5">
+          <button onclick="simulateVoiceCommand('What is my top priority today?')" class="text-left text-xs bg-white hover:bg-rose-50 text-slate-700 px-3 py-1.5 rounded-full border border-rose-100 font-medium transition">
+            💬 "What is my top priority today?"
+          </button>
+          <button onclick="simulateVoiceCommand('இன்றைய கூட்டங்கள் என்ன?')" class="text-left text-xs bg-white hover:bg-rose-50 text-slate-700 px-3 py-1.5 rounded-full border border-rose-100 font-medium transition">
+            💬 "இன்றைய கூட்டங்கள் என்ன?" (Tamil)
+          </button>
+          <button onclick="simulateVoiceCommand('Create invoice for Antz Media')" class="text-left text-xs bg-white hover:bg-rose-50 text-slate-700 px-3 py-1.5 rounded-full border border-rose-100 font-medium transition">
+            💬 "Create invoice for Antz Media"
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 6: CALENDAR & SMART TASKS -->
+    <!-- ========================================================================= -->
+    <section id="screen-calendar" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Calendar & Tasks</h3>
+        </div>
+        <button onclick="openNewTaskModal()" class="bg-crimson-600 hover:bg-crimson-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-crimson-glow flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span>Add Event</span>
+        </button>
+      </div>
+
+      <!-- Interactive Calendar Grid (Month View) -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100 mb-3">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-outfit font-bold text-sm text-slate-900">October 2026</span>
+          <div class="flex items-center gap-1 text-xs">
+            <button onclick="showToast('Navigating previous month')" class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-rose-50"><i class="fa-solid fa-chevron-left text-[9px]"></i></button>
+            <button onclick="showToast('Navigating next month')" class="w-6 h-6 rounded-lg bg-slate-100 text-slate-600 flex items-center justify-center hover:bg-rose-50"><i class="fa-solid fa-chevron-right text-[9px]"></i></button>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 text-center text-[10px] font-bold text-slate-400 mb-1">
+          <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
+        </div>
+
+        <div class="grid grid-cols-7 gap-1 text-center text-xs font-medium text-slate-700">
+          <span class="text-slate-300 py-1.5">27</span><span class="text-slate-300 py-1.5">28</span><span class="text-slate-300 py-1.5">29</span><span class="text-slate-300 py-1.5">30</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">1</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">2</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">3</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">4</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">5</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">6</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">7</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">8</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">9</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">10</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">11</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">12</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">13</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">14</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">15</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">16</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">17</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">18</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">19</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">20</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">21</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">22</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">23</span><span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">24</span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">25</span>
+          <span onclick="selectCalendarDate(26)" class="py-1.5 bg-crimson-600 text-white font-bold rounded-xl shadow-sm relative cursor-pointer">
+            26
+            <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-300 rounded-full"></span>
+          </span>
+          <span onclick="selectCalendarDate(27)" class="py-1.5 font-bold relative cursor-pointer hover:bg-rose-50 rounded-lg">
+            27
+            <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-crimson-500 rounded-full"></span>
+          </span>
+          <span onclick="selectCalendarDate(28)" class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">28</span>
+          <span onclick="selectCalendarDate(29)" class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">29</span>
+          <span onclick="selectCalendarDate(30)" class="py-1.5 font-bold relative cursor-pointer hover:bg-rose-50 rounded-lg">
+            30
+            <span class="absolute bottom-0.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-amber-500 rounded-full"></span>
+          </span>
+          <span class="py-1.5 cursor-pointer hover:bg-rose-50 rounded-lg">31</span>
+        </div>
+      </div>
+
+      <!-- Hourly Timeline & Escalations -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+          <span id="agenda-date-heading" class="text-xs font-bold text-slate-800">Monday, Oct 26 Agenda</span>
+          <span class="text-[10px] text-crimson-600 font-semibold">Smart Escalation Enabled</span>
+        </div>
+
+        <div id="agenda-timeline" class="space-y-3 relative before:absolute before:inset-0 before:left-3.5 before:w-0.5 before:bg-slate-200">
+          <div class="flex items-start gap-3 relative">
+            <div class="w-7 h-7 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-xs shrink-0 z-10 font-bold border border-white">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex-1">
+              <span class="text-[10px] text-slate-400 block font-medium">09:00 AM • Completed</span>
+              <h5 class="text-xs font-semibold text-slate-800">Review VIP Email Rules & Inbox Events</h5>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 relative">
+            <div class="w-7 h-7 rounded-full bg-crimson-600 text-white flex items-center justify-center text-xs shrink-0 z-10 font-bold border border-white shadow-sm">
+              <i class="fa-solid fa-briefcase"></i>
+            </div>
+            <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-200 flex-1">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] text-crimson-600 font-bold block">02:30 PM • Critical Deadline</span>
+                <span class="text-[9px] bg-crimson-600 text-white px-1.5 py-0.2 rounded-full">Auto-Call Alert</span>
+              </div>
+              <h5 class="text-xs font-bold text-slate-900 mt-0.5">Submit Antz Media Quarterly Financials</h5>
+              <div class="flex items-center gap-2 mt-2">
+                <button onclick="triggerSimulatedPhoneCall()" class="text-[10px] bg-white border border-rose-200 text-crimson-700 px-2 py-0.5 rounded font-bold hover:bg-rose-100 transition">
+                  <i class="fa-solid fa-phone text-[9px]"></i> Test Telephony Call
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-3 relative">
+            <div class="w-7 h-7 rounded-full bg-slate-100 text-slate-600 flex items-center justify-center text-xs shrink-0 z-10 font-bold border border-white">
+              <i class="fa-solid fa-clock"></i>
+            </div>
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 flex-1">
+              <span class="text-[10px] text-slate-400 block font-medium">05:00 PM • Scheduled</span>
+              <h5 class="text-xs font-semibold text-slate-800">AI Sprint Review & Roadmap Alignment</h5>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 7: SMART INBOX & EMAIL TRIAGE -->
+    <!-- ========================================================================= -->
+    <section id="screen-emails" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Smart Inbox</h3>
+        </div>
+        <span class="text-[10px] font-bold text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full">2 Pending Approval</span>
+      </div>
+
+      <!-- Email Item 1 (VIP) -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100 mb-3">
+        <div class="flex items-start justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-amber-100 text-amber-700 font-bold flex items-center justify-center text-xs">
+              RK
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">Rajesh Kumar (Client)</span>
+              <span class="text-[10px] text-slate-400">rajesh@enterprise.com • 10:15 AM</span>
+            </div>
+          </div>
+          <span class="bg-crimson-100 text-crimson-700 font-extrabold text-[9px] px-2 py-0.5 rounded-full">VIP Escalation</span>
+        </div>
+
+        <h4 class="text-xs font-bold text-slate-800 mb-1">Contract Renewal: Q4 Scope Review & Invoicing</h4>
+        <p class="text-[11px] text-slate-600 leading-relaxed mb-3">
+          "Hi Remakanth, please review the revised Antz Media scope of work document. Can we schedule a brief call at 3:00 PM today?"
+        </p>
+
+        <!-- AI Generated Draft Reply -->
+        <div class="bg-rose-50/80 rounded-xl p-3 border border-rose-200 mb-3">
+          <div class="flex items-center justify-between mb-1.5">
+            <span class="text-[10px] font-bold uppercase text-crimson-700 flex items-center gap-1">
+              <i class="fa-solid fa-wand-magic-sparkles"></i> AI Generated Reply
+            </span>
+            <span class="text-[9px] text-slate-500">Autonomous draft</span>
+          </div>
+          <p id="email-draft-text" class="text-xs text-slate-800 font-medium italic">
+            "Hi Rajesh, thank you for sending this. 3:00 PM works perfectly for me. I will send over the calendar invite and updated milestone annexure shortly."
+          </p>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="approveAndSendEmail()" class="flex-1 bg-crimson-600 hover:bg-crimson-700 text-white text-xs font-semibold py-2 rounded-xl shadow-crimson-glow flex items-center justify-center gap-1.5 transition">
+            <i class="fa-solid fa-paper-plane text-[10px]"></i>
+            <span>Approve & Send</span>
+          </button>
+          <button onclick="editEmailDraft()" class="px-3 py-2 bg-slate-100 text-slate-700 hover:bg-rose-50 text-xs font-semibold rounded-xl border border-slate-200 transition">
+            Edit
+          </button>
+        </div>
+      </div>
+
+      <!-- Email Item 2 -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <div class="flex items-start justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <div class="w-8 h-8 rounded-full bg-slate-100 text-slate-700 font-bold flex items-center justify-center text-xs">
+              AWS
+            </div>
+            <div>
+              <span class="text-xs font-bold text-slate-900 block">Amazon Web Services</span>
+              <span class="text-[10px] text-slate-400">no-reply@amazon.com • 08:30 AM</span>
+            </div>
+          </div>
+          <span class="bg-slate-100 text-slate-600 font-bold text-[9px] px-2 py-0.5 rounded-full">Billing</span>
+        </div>
+
+        <h4 class="text-xs font-bold text-slate-800 mb-1">Monthly Billing Invoice #AWS-89218 Available</h4>
+        <p class="text-[11px] text-slate-600 leading-relaxed mb-3">
+          "Your statement for October 2026 is now available. Total amount charged: $148.50."
+        </p>
+
+        <div class="flex items-center gap-2">
+          <button onclick="showToast('Archived & auto-filed to Accounting Vault')" class="text-xs font-semibold text-slate-600 bg-slate-100 hover:bg-slate-200 py-2 px-3 rounded-xl">
+            Auto-File to Finance
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 8: DOCUMENT VAULT & RAG Q&A -->
+    <!-- ========================================================================= -->
+    <section id="screen-vault" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Document Vault & RAG</h3>
+        </div>
+        <button onclick="simulateUpload()" class="bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-cloud-arrow-up text-[10px]"></i>
+          <span>Upload PDF</span>
+        </button>
+      </div>
+
+      <!-- Semantic Search / Ask Question Input -->
+      <div class="relative z-10 bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 mb-3">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400 block mb-1.5">Ask Document Anything (pgvector RAG)</span>
+        <div class="flex items-center gap-2 bg-slate-50 rounded-xl p-1.5 border border-slate-200 focus-within:border-crimson-500">
+          <i class="fa-solid fa-magnifying-glass text-slate-400 text-xs pl-2"></i>
+          <input id="rag-question-input" type="text" placeholder="e.g. What is the contract termination notice period?" class="w-full bg-transparent text-xs text-slate-800 placeholder-slate-400 focus:outline-none font-medium" value="What is the payment milestone schedule?">
+          <button onclick="askDocumentQuestion()" class="bg-crimson-600 hover:bg-crimson-700 text-white px-3 py-1.5 rounded-lg text-xs font-bold shrink-0 transition">
+            Ask
+          </button>
+        </div>
+      </div>
+
+      <!-- AI Semantic Answer Box -->
+      <div id="rag-answer-box" class="relative z-10 bg-gradient-to-br from-blue-50/80 to-white rounded-2xl p-4 shadow-card border border-blue-200 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-blue-900 flex items-center gap-1.5">
+            <i class="fa-solid fa-brain text-blue-600"></i> AI Answer with Citations
+          </span>
+          <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-2 py-0.5 rounded-full">Cosine Sim: 0.94</span>
+        </div>
+        <p class="text-xs text-slate-700 leading-relaxed mb-3 font-medium">
+          "According to <strong>Antz_Media_Master_Services_2026.pdf</strong>, payments are structured in 3 milestones: 40% advance upon signature, 30% on beta milestone delivery, and 30% within 15 days of final deployment."
+        </p>
+        <div class="bg-white/80 rounded-xl p-2.5 border border-blue-100 flex items-center justify-between text-[10px]">
+          <span class="font-bold text-slate-700"><i class="fa-solid fa-quote-left text-blue-500 mr-1"></i> Section 4.2 • Page 7, Paragraph 3</span>
+          <button onclick="showToast('Opened PDF viewer to Page 7')" class="text-blue-600 font-bold hover:underline">View Source PDF</button>
+        </div>
+      </div>
+
+      <!-- TTS Audio Player with Playback Controls -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800 flex items-center gap-1.5">
+            <i class="fa-solid fa-headphones text-crimson-600"></i> Text-to-Speech Audio Summary
+          </span>
+          <button onclick="toggleTtsSpeed()" id="tts-speed-btn" class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 hover:bg-rose-50 text-slate-700">1.0x</button>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="toggleDocumentAudio()" class="w-10 h-10 rounded-full bg-crimson-600 text-white flex items-center justify-center text-sm shadow-md hover:bg-crimson-700 transition">
+            <i id="tts-play-icon" class="fa-solid fa-play"></i>
+          </button>
+          <div class="flex-1">
+            <span class="text-xs font-semibold text-slate-800 block">Antz_Media_NDA.pdf Audio Summary</span>
+            <div class="w-full bg-slate-100 h-1.5 rounded-full mt-1 overflow-hidden">
+              <div id="tts-progress-bar" class="bg-crimson-600 h-full w-1/3 transition-all duration-300"></div>
+            </div>
+          </div>
+          <span class="text-[10px] text-slate-400 font-medium">01:45</span>
+        </div>
+      </div>
+
+      <!-- Indexed Document List -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <span class="text-xs font-bold text-slate-800 block mb-2">Indexed Documents (RAG Ready)</span>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-file-pdf text-red-500 text-base"></i>
+              <div>
+                <span class="text-xs font-semibold text-slate-800 block">Antz_Media_Master_Services_2026.pdf</span>
+                <span class="text-[10px] text-slate-400">1.8 MB • 24 Pages • 48 Embeddings</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">RAG Indexed</span>
+          </div>
+
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2">
+              <i class="fa-solid fa-file-pdf text-red-500 text-base"></i>
+              <div>
+                <span class="text-xs font-semibold text-slate-800 block">Antz_Media_NDA.pdf</span>
+                <span class="text-[10px] text-slate-400">420 KB • 4 Pages • 12 Embeddings</span>
+              </div>
+            </div>
+            <span class="text-[9px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.5 rounded">RAG Indexed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 9: INVOICES & BUSINESS FINANCE -->
+    <!-- ========================================================================= -->
+    <section id="screen-invoices" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Invoices & Finance</h3>
+        </div>
+        <button onclick="openNewInvoiceModal()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3 py-1.5 rounded-xl shadow-sm flex items-center gap-1.5 transition">
+          <i class="fa-solid fa-plus text-[10px]"></i>
+          <span>Create Invoice</span>
+        </button>
+      </div>
+
+      <!-- Financial Metric Cards -->
+      <div class="relative z-10 grid grid-cols-2 gap-3 mb-3">
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Total Invoiced</span>
+          <span class="font-outfit font-extrabold text-xl text-slate-900 block">₹ 4,85,000</span>
+          <span class="text-[10px] text-emerald-600 font-semibold">+18% vs Last Month</span>
+        </div>
+
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-1">Pending Collection</span>
+          <span class="font-outfit font-extrabold text-xl text-crimson-600 block">₹ 1,20,000</span>
+          <span class="text-[10px] text-crimson-600 font-semibold">1 Overdue Invoice</span>
+        </div>
+      </div>
+
+      <!-- Invoices List -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+          <span class="text-xs font-bold text-slate-800">Recent Invoices</span>
+          <span class="text-[10px] text-slate-400">Auto-GST 18% Calculated</span>
+        </div>
+
+        <div id="invoices-list" class="space-y-3">
+          <div class="p-3 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-slate-900">#INV-2026-089</span>
+              <span class="bg-emerald-100 text-emerald-700 font-bold text-[9px] px-2 py-0.5 rounded-full">Paid</span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-600 mb-2">
+              <span>Client: Rajesh Enterprises</span>
+              <span class="font-extrabold text-slate-900">₹ 85,000</span>
+            </div>
+            <div class="flex items-center gap-2 pt-1 border-t border-slate-200 text-[10px]">
+              <button onclick="showToast('Invoice PDF downloaded')" class="text-blue-600 font-semibold hover:underline"><i class="fa-solid fa-download"></i> PDF</button>
+              <button onclick="showToast('Dispatched to client WhatsApp')" class="text-emerald-600 font-semibold hover:underline"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-xl bg-rose-50/70 border border-rose-200">
+            <div class="flex items-center justify-between mb-1">
+              <span class="text-xs font-bold text-slate-900">#INV-2026-090</span>
+              <span class="bg-crimson-600 text-white font-bold text-[9px] px-2 py-0.5 rounded-full">Pending</span>
+            </div>
+            <div class="flex items-center justify-between text-xs text-slate-600 mb-2">
+              <span>Client: Antz Media Digital Retainer</span>
+              <span class="font-extrabold text-crimson-600">₹ 1,20,000</span>
+            </div>
+            <div class="flex items-center justify-between pt-1 border-t border-rose-200 text-[10px]">
+              <span class="text-crimson-700 font-semibold">Due: Nov 15, 2026</span>
+              <button onclick="showToast('Automated WhatsApp payment reminder dispatched!')" class="bg-crimson-600 hover:bg-crimson-700 text-white px-2.5 py-1 rounded font-bold transition">
+                Send WhatsApp Reminder
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 10: POMODORO FOCUS & HABITS -->
+    <!-- ========================================================================= -->
+    <section id="screen-focus" class="screen-view hidden flex-1 flex flex-col justify-between relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-2">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Focus & Habits</h3>
+        </div>
+        <span class="text-[10px] font-bold text-indigo-700 bg-indigo-100 px-2 py-0.5 rounded-full">FR-038</span>
+      </div>
+
+      <!-- Working Pomodoro Clock -->
+      <div class="relative z-10 my-auto flex flex-col items-center text-center py-4">
+        <div class="relative w-48 h-48 rounded-full border-8 border-indigo-100 bg-white shadow-xl flex flex-col items-center justify-center mb-4">
+          <span class="text-[10px] uppercase font-bold text-indigo-500 tracking-wider">Deep Work Block</span>
+          <span id="pomodoro-timer-display" class="font-outfit font-extrabold text-4xl text-slate-900 tracking-tight my-1">25:00</span>
+          <span class="text-[10px] text-slate-400 font-medium">Session 1 of 4</span>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex items-center gap-3">
+          <button onclick="togglePomodoro()" class="w-12 h-12 rounded-full bg-indigo-600 hover:bg-indigo-700 text-white flex items-center justify-center text-lg shadow-lg transition">
+            <i id="pomodoro-icon" class="fa-solid fa-play"></i>
+          </button>
+          <button onclick="resetPomodoro()" class="w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center text-sm transition">
+            <i class="fa-solid fa-rotate-right"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Habits Check-in -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800">Daily Habit Streaks</span>
+          <span class="text-[10px] font-bold text-amber-600"><i class="fa-solid fa-fire"></i> 14 Day Streak</span>
+        </div>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" checked onchange="showToast('Habit checked: Morning Cardio')" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+              <span class="text-xs font-medium text-slate-800">Morning Cardio (45 mins)</span>
+            </div>
+            <span class="text-[9px] text-slate-400">Done at 06:30 AM</span>
+          </div>
+
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
+            <div class="flex items-center gap-2">
+              <input type="checkbox" onchange="showToast('Habit checked: Read 20 pages')" class="w-4 h-4 rounded text-indigo-600 focus:ring-indigo-500 cursor-pointer">
+              <span class="text-xs font-medium text-slate-800">Read 20 pages AI Architecture</span>
+            </div>
+            <span class="text-[9px] text-slate-400">Pending</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 11: 10 WORKFLOW MARKETPLACE -->
+    <!-- ========================================================================= -->
+    <section id="screen-marketplace" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">10 Workflows</h3>
+        </div>
+        <span class="text-[10px] font-bold text-orange-700 bg-orange-100 px-2 py-0.5 rounded-full">Turnkey Automations</span>
+      </div>
+
+      <div class="relative z-10 space-y-2.5">
+        <!-- Workflow 1 -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-xs text-slate-900 block">1. VIP Inbound Email Escalation</span>
+            <span class="text-[10px] text-slate-500">Auto-drafts reply & sends WhatsApp alert</span>
+          </div>
+          <button onclick="triggerWorkflow('VIP Inbound Email Escalation')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-orange-200 transition">
+            Run Now
+          </button>
+        </div>
+
+        <!-- Workflow 2 -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-xs text-slate-900 block">2. Automated GST Invoice Dispatch</span>
+            <span class="text-[10px] text-slate-500">Calculates 18% GST & sends client PDF</span>
+          </div>
+          <button onclick="triggerWorkflow('Automated GST Invoice Dispatch')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-orange-200 transition">
+            Run Now
+          </button>
+        </div>
+
+        <!-- Workflow 3 -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-xs text-slate-900 block">3. Urgent Calendar Telephony Call</span>
+            <span class="text-[10px] text-slate-500">Triggers mobile call 15 mins before critical events</span>
+          </div>
+          <button onclick="triggerWorkflow('Urgent Calendar Telephony Call')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-orange-200 transition">
+            Run Now
+          </button>
+        </div>
+
+        <!-- Workflow 4 -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-xs text-slate-900 block">4. Multi-Workspace Context Filter</span>
+            <span class="text-[10px] text-slate-500">Air-gaps Personal vs Work vs Business memory</span>
+          </div>
+          <button onclick="triggerWorkflow('Multi-Workspace Context Filter')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-orange-200 transition">
+            Run Now
+          </button>
+        </div>
+
+        <!-- Workflow 5 -->
+        <div class="bg-white rounded-2xl p-3.5 shadow-card border border-rose-100 flex items-center justify-between">
+          <div>
+            <span class="font-bold text-xs text-slate-900 block">5. Tamil Voice to English Task</span>
+            <span class="text-[10px] text-slate-500">Translates Tamil voice prompt & saves agenda</span>
+          </div>
+          <button onclick="triggerWorkflow('Tamil Voice to English Task')" class="bg-orange-50 hover:bg-orange-100 text-orange-700 text-[10px] font-bold px-2.5 py-1 rounded-lg border border-orange-200 transition">
+            Run Now
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 12: TEAM COLLABORATION & APPROVALS -->
+    <!-- ========================================================================= -->
+    <section id="screen-team" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Team & Approvals</h3>
+        </div>
+        <span class="text-[10px] font-bold text-teal-700 bg-teal-100 px-2 py-0.5 rounded-full">Antz Media</span>
+      </div>
+
+      <!-- Pending Approval Card -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100 mb-3">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-xs font-bold text-slate-800">Pending Manager Approval</span>
+          <span class="text-[9px] bg-amber-100 text-amber-700 font-bold px-2 py-0.5 rounded-full">Requires Signature</span>
+        </div>
+        <p class="text-xs text-slate-600 mb-3">
+          <strong>Priya S (Marketing)</strong> submitted an expense report for ₹ 18,500 (Antz Media Brand Campaign Q4).
+        </p>
+        <div class="flex items-center gap-2">
+          <button onclick="showToast('Expense report approved! Dispatched to Finance.')" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold py-2 rounded-xl transition">
+            Approve
+          </button>
+          <button onclick="showToast('Request rejected with feedback note.')" class="flex-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold py-2 rounded-xl transition">
+            Reject
+          </button>
+        </div>
+      </div>
+
+      <!-- Team Roster -->
+      <div class="relative z-10 bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+        <span class="text-xs font-bold text-slate-800 block mb-2">Active Team Members</span>
+        <div class="space-y-2 text-xs">
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-full bg-crimson-600 text-white flex items-center justify-center font-bold text-[10px]">RR</div>
+              <div>
+                <span class="font-semibold text-slate-800 block">Remakanth R (You)</span>
+                <span class="text-[10px] text-slate-400">Chief Evangelist • Admin</span>
+              </div>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+
+          <div class="flex items-center justify-between p-2 rounded-xl bg-slate-50">
+            <div class="flex items-center gap-2.5">
+              <div class="w-7 h-7 rounded-full bg-teal-600 text-white flex items-center justify-center font-bold text-[10px]">PS</div>
+              <div>
+                <span class="font-semibold text-slate-800 block">Priya S</span>
+                <span class="text-[10px] text-slate-400">Marketing Lead • Member</span>
+              </div>
+            </div>
+            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 13: TELEPHONY SIMULATOR (INCOMING CALL) -->
+    <!-- ========================================================================= -->
+    <section id="screen-phonecall" class="screen-view hidden flex-1 flex flex-col justify-between relative bg-gradient-to-b from-slate-950 via-slate-900 to-crimson-deep text-white p-6 z-30">
+      <!-- Top Call Status -->
+      <div class="text-center pt-8">
+        <span class="text-[10px] uppercase font-bold tracking-widest text-rose-300 block mb-1">Incoming AI Assistant Call</span>
+        <h3 class="font-outfit font-extrabold text-2xl tracking-tight">Smart Cards AI</h3>
+        <span id="call-timer" class="text-xs text-rose-200 mt-1 block">Ringing...</span>
+      </div>
+
+      <!-- Caller Pulsing Avatar -->
+      <div class="flex flex-col items-center my-auto">
+        <div class="relative">
+          <div class="absolute -inset-4 bg-crimson-500/30 rounded-full blur-xl pulse-glow"></div>
+          <div class="relative w-28 h-28 rounded-full bg-crimson-600 border-4 border-white/20 flex items-center justify-center text-4xl shadow-2xl">
+            <i class="fa-solid fa-robot text-white"></i>
+          </div>
+        </div>
+        <span class="text-xs text-rose-200 mt-4 font-medium">Smart Escalation: Quarterly Financials</span>
+      </div>
+
+      <!-- Action Controls -->
+      <div class="flex items-center justify-around pb-10">
+        <div class="flex flex-col items-center gap-2">
+          <button onclick="endSimulatedCall()" class="w-16 h-16 rounded-full bg-red-600 hover:bg-red-700 flex items-center justify-center text-xl text-white shadow-xl transition">
+            <i class="fa-solid fa-phone-slash"></i>
+          </button>
+          <span class="text-xs text-slate-300">Decline</span>
+        </div>
+
+        <div class="flex flex-col items-center gap-2">
+          <button onclick="answerSimulatedCall()" class="w-16 h-16 rounded-full bg-emerald-500 hover:bg-emerald-600 flex items-center justify-center text-xl text-white shadow-xl transition animate-bounce">
+            <i class="fa-solid fa-phone"></i>
+          </button>
+          <span class="text-xs text-slate-300">Answer</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- SCREEN 14: SETTINGS & PRIVACY PURGE -->
+    <!-- ========================================================================= -->
+    <section id="screen-settings" class="screen-view hidden flex-1 flex flex-col relative overflow-y-auto px-5 pt-3 pb-16">
+      <div class="absolute inset-0 pointer-events-none bg-mesh-pattern opacity-30 z-0"></div>
+
+      <div class="relative z-10 flex items-center justify-between mb-3">
+        <div class="flex items-center gap-2">
+          <button onclick="switchScreen('dashboard')" class="text-slate-500 hover:text-slate-800"><i class="fa-solid fa-arrow-left"></i></button>
+          <h3 class="font-outfit font-bold text-slate-900 text-lg">Settings & Privacy</h3>
+        </div>
+        <span class="text-[10px] font-bold text-slate-600 bg-slate-100 px-2 py-0.5 rounded-full">v3.0.0</span>
+      </div>
+
+      <div class="relative z-10 space-y-3">
+        <div class="bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2">Regional & Language</span>
+          <div class="space-y-2.5">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-slate-700 text-xs">Timezone</span>
+              <select class="p-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+                <option>Asia/Kolkata (IST +5:30)</option>
+                <option>UTC (Coordinated)</option>
+                <option>America/New_York (EST)</option>
+              </select>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-slate-700 text-xs">Primary Voice Language</span>
+              <select class="p-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-medium">
+                <option>English (India)</option>
+                <option>தமிழ் (Tamil)</option>
+                <option>Bilingual Auto-Detect</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="bg-gradient-to-br from-slate-900 to-crimson-deep text-white rounded-2xl p-4 shadow-card">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] uppercase font-bold text-rose-200">Subscription Tier</span>
+            <span class="bg-amber-400 text-slate-900 font-extrabold text-[9px] px-2 py-0.5 rounded-full">PRO PLAN</span>
+          </div>
+          <div class="space-y-1 mb-2 text-[11px]">
+            <div class="flex justify-between"><span>Voice Minutes Used:</span><span>1,420 / 5,000 mins</span></div>
+            <div class="w-full bg-white/20 h-1.5 rounded-full overflow-hidden">
+              <div class="bg-amber-400 h-full w-[28%]"></div>
+            </div>
+          </div>
+          <span class="text-[10px] text-rose-200">Renews on Nov 26, 2026 • Auto-billing</span>
+        </div>
+
+        <div class="bg-white rounded-2xl p-4 shadow-card border border-rose-100">
+          <span class="text-[10px] uppercase font-bold text-slate-400 block mb-2">Privacy & Memory Purge</span>
+          <p class="text-[11px] text-slate-500 mb-2">Permanently erase all stored conversational memory and uploaded OCR chunks.</p>
+          <button onclick="showToast('All temporary memory wiped! Database updated.')" class="w-full bg-rose-50 text-crimson-700 border border-rose-200 font-semibold py-2 rounded-xl hover:bg-rose-100 text-xs transition">
+            Purge Personal Memory Store
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 4. BOTTOM APP NAVIGATION BAR (EXACT MATCH FOR IMAGE 2) -->
+    <!-- ========================================================================= -->
+    <nav id="bottom-nav" class="w-full h-16 bg-crimson-600 z-30 shadow-nav flex items-center justify-around px-3 text-white shrink-0">
+      <button onclick="switchScreen('dashboard')" class="nav-item flex flex-col items-center justify-center gap-0.5 text-white font-bold transition" data-nav="dashboard">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-house text-sm"></i>
+        </div>
+        <span class="text-[10px] leading-none">Home</span>
+      </button>
+
+      <button onclick="switchScreen('calendar')" class="nav-item flex flex-col items-center justify-center gap-0.5 text-white/80 hover:text-white transition" data-nav="calendar">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center">
+          <i class="fa-regular fa-calendar-check text-sm"></i>
+        </div>
+        <span class="text-[10px] leading-none">Agenda</span>
+      </button>
+
+      <!-- Center Floating AI Voice Assistant Trigger Button -->
+      <div class="relative -top-4">
+        <button onclick="switchScreen('voice')" class="w-12 h-12 rounded-full bg-white text-crimson-600 flex items-center justify-center text-lg shadow-xl hover:scale-105 active:scale-95 transition border-4 border-crimson-600" title="Voice Assistant">
+          <i class="fa-solid fa-microphone"></i>
+        </button>
+      </div>
+
+      <button onclick="switchScreen('vault')" class="nav-item flex flex-col items-center justify-center gap-0.5 text-white/80 hover:text-white transition" data-nav="vault">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-qrcode text-sm"></i>
+        </div>
+        <span class="text-[10px] leading-none">Scan</span>
+      </button>
+
+      <button onclick="switchScreen('profile')" class="nav-item flex flex-col items-center justify-center gap-0.5 text-white/80 hover:text-white transition" data-nav="profile">
+        <div class="w-8 h-8 rounded-full flex items-center justify-center">
+          <i class="fa-solid fa-share-nodes text-sm"></i>
+        </div>
+        <span class="text-[10px] leading-none">Share</span>
+      </button>
+    </nav>
+
+    <!-- Global Toast Notification Banner -->
+    <div id="toast-banner" class="hidden absolute top-12 left-4 right-4 z-50 bg-slate-900/95 text-white px-4 py-2.5 rounded-2xl shadow-2xl border border-slate-700 text-xs font-semibold flex items-center gap-2 animate-in fade-in slide-in-from-top-4 duration-200">
+      <i class="fa-solid fa-circle-check text-emerald-400"></i>
+      <span id="toast-msg">Action processed successfully</span>
+    </div>
+
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- WORKING MODALS (EDIT DETAILS, SHARE, AGENT RUNNER, NEW TASK, NEW INVOICE) -->
+  <!-- ========================================================================= -->
+
+  <!-- Modal 1: Edit Professional Details (Image 2) -->
+  <div id="modal-edit-professional" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-rose-100 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+        <h4 class="font-outfit font-bold text-slate-900 text-sm">Edit Professional Details</h4>
+        <button onclick="closeEditProfessionalModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Organisation</label>
+          <input id="input-edit-org" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none" value="Antz Media Digital">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Designation</label>
+          <input id="input-edit-desig" type="text" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none" value="Chief Evangelist">
+        </div>
+        <button onclick="saveProfessionalDetails()" class="w-full mt-2 bg-crimson-600 hover:bg-crimson-700 text-white font-semibold py-2.5 rounded-xl shadow-crimson-glow transition">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 2: Edit Address (Image 2) -->
+  <div id="modal-edit-address" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-rose-100 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+        <h4 class="font-outfit font-bold text-slate-900 text-sm">Edit Professional Address</h4>
+        <button onclick="closeEditAddressModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Address Details</label>
+          <textarea id="input-edit-address" rows="3" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none leading-relaxed">Level 4, Antz Tech Hub, T. Nagar, Chennai, Tamil Nadu 600017</textarea>
+        </div>
+        <button onclick="saveAddressDetails()" class="w-full mt-2 bg-crimson-600 hover:bg-crimson-700 text-white font-semibold py-2.5 rounded-xl shadow-crimson-glow transition">
+          Save Address
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 3: Share Card Bottom Sheet (QR Code & NFC) -->
+  <div id="modal-share-card" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-end justify-center">
+    <div class="bg-white rounded-t-[32px] w-full max-w-sm p-6 shadow-2xl border-t border-rose-100 animate-in slide-in-from-bottom duration-200 text-center">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-xs uppercase font-bold text-crimson-600 tracking-wider">Share Smart Card</span>
+        <button onclick="closeShareCardModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Generated QR Code Preview -->
+      <div class="w-36 h-36 bg-slate-50 border border-slate-200 rounded-2xl mx-auto p-2 mb-3 flex items-center justify-center shadow-inner">
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https://smartcards.ai/remakanth-antzmedia" alt="QR Code" class="w-full h-full rounded-lg">
+      </div>
+      <h4 class="font-outfit font-bold text-slate-900 text-sm">Remakanth R • Antz Media Digital</h4>
+      <p class="text-[11px] text-slate-500 mb-4">Scan with any phone camera or tap via NFC</p>
+
+      <div class="grid grid-cols-2 gap-2 text-xs">
+        <button onclick="showToast('Copied card link: https://smartcards.ai/remakanth')" class="bg-slate-100 hover:bg-rose-50 text-slate-700 py-2.5 rounded-xl font-semibold border border-slate-200 flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-link text-crimson-600"></i>
+          <span>Copy Link</span>
+        </button>
+        <button onclick="showToast('Simulated NFC Beam: Contact transferred to nearby device!')" class="bg-crimson-600 hover:bg-crimson-700 text-white py-2.5 rounded-xl font-semibold shadow-crimson-glow flex items-center justify-center gap-1.5">
+          <i class="fa-solid fa-wifi"></i>
+          <span>Tap NFC</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 4: Add New Task / Event Modal -->
+  <div id="modal-new-task" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-rose-100 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+        <h4 class="font-outfit font-bold text-slate-900 text-sm">Add New Task / Event</h4>
+        <button onclick="closeNewTaskModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Task Title</label>
+          <input id="input-task-title" type="text" placeholder="e.g. Follow up on Q4 contract" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none font-medium">
+        </div>
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Time</label>
+            <input id="input-task-time" type="time" value="14:00" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none font-medium">
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Priority</label>
+            <select id="input-task-priority" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none font-medium">
+              <option value="High">High (Urgent)</option>
+              <option value="Medium" selected>Medium</option>
+              <option value="Low">Low</option>
+            </select>
+          </div>
+        </div>
+        <button onclick="saveNewTask()" class="w-full mt-2 bg-crimson-600 hover:bg-crimson-700 text-white font-semibold py-2.5 rounded-xl shadow-crimson-glow transition">
+          Create & Schedule Task
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 5: Create Invoice Modal -->
+  <div id="modal-new-invoice" class="hidden fixed inset-0 z-50 bg-slate-950/70 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-rose-100 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-100 pb-2 mb-3">
+        <h4 class="font-outfit font-bold text-slate-900 text-sm">Create New GST Invoice</h4>
+        <button onclick="closeNewInvoiceModal()" class="w-7 h-7 rounded-full bg-slate-100 text-slate-400 hover:text-slate-600 flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Client Name</label>
+          <input id="input-inv-client" type="text" placeholder="e.g. Tata Consultancy Services" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none font-medium">
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Base Amount (₹)</label>
+          <input id="input-inv-amount" type="number" value="50000" oninput="calculateInvoiceGst()" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-2.5 focus:border-crimson-500 focus:outline-none font-medium">
+        </div>
+        <div class="p-2.5 rounded-xl bg-slate-50 border border-slate-200 space-y-1">
+          <div class="flex justify-between text-[11px]"><span>CGST (9%):</span><span id="inv-cgst">₹ 4,500</span></div>
+          <div class="flex justify-between text-[11px]"><span>SGST (9%):</span><span id="inv-sgst">₹ 4,500</span></div>
+          <div class="flex justify-between font-bold text-xs border-t border-slate-200 pt-1 text-slate-900">
+            <span>Total with 18% GST:</span>
+            <span id="inv-total">₹ 59,000</span>
+          </div>
+        </div>
+        <button onclick="saveNewInvoice()" class="w-full mt-2 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold py-2.5 rounded-xl shadow-sm transition">
+          Generate & Save Invoice
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 6: Live AI Agent Terminal Drawer -->
+  <div id="modal-agent-runner" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-slate-900 text-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-slate-800 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center justify-between border-b border-slate-800 pb-2 mb-3">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+          <h4 id="agent-runner-title" class="font-outfit font-bold text-sm text-white">Agent Execution</h4>
+        </div>
+        <button onclick="closeAgentRunner()" class="w-7 h-7 rounded-full bg-slate-800 text-slate-400 hover:text-white flex items-center justify-center text-xs"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      
+      <!-- Terminal Log Box -->
+      <div class="bg-slate-950 rounded-xl p-3 font-mono text-[11px] text-emerald-400 space-y-1.5 h-44 overflow-y-auto border border-slate-800">
+        <p class="text-slate-400">> Initializing autonomous agent container...</p>
+        <p id="agent-step-1" class="hidden text-rose-300">> Ingesting context & user workspace intent...</p>
+        <p id="agent-step-2" class="hidden text-amber-300">> Executing pgvector semantic search (cos_sim: 0.94)...</p>
+        <p id="agent-step-3" class="hidden text-blue-300">> Invoking tool action: verify_and_schedule()...</p>
+        <p id="agent-step-4" class="hidden text-emerald-400">> [SUCCESS] Agent completed workflow in 380ms!</p>
+      </div>
+
+      <div class="mt-4 flex items-center justify-end">
+        <button onclick="closeAgentRunner()" class="bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-xl text-xs font-semibold">
+          Close Terminal
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal 7: Universal Command Search Modal (Ctrl+K) -->
+  <div id="universal-search-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl w-full max-w-sm p-5 shadow-2xl border border-rose-100 animate-in zoom-in-95 duration-150">
+      <div class="flex items-center gap-2 border-b border-slate-200 pb-3 mb-3">
+        <i class="fa-solid fa-magnifying-glass text-slate-400 text-sm"></i>
+        <input id="universal-search-input" oninput="filterUniversalSearch(this.value)" type="text" placeholder="Search tasks, documents, emails, memories..." class="w-full bg-transparent focus:outline-none text-sm text-slate-800 font-medium" value="Antz Media">
+        <button onclick="closeUniversalSearch()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div id="universal-search-results" class="space-y-2 text-xs max-h-64 overflow-y-auto">
+        <div onclick="jumpFromSearch('calendar')" class="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 cursor-pointer flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-crimson-100 text-crimson-700 font-bold text-[9px]">TASK</span>
+            <span class="font-semibold text-slate-800">Submit Quarterly Antz Media Report</span>
+          </div>
+          <span class="text-slate-400 text-[10px]">Today 2:30 PM</span>
+        </div>
+
+        <div onclick="jumpFromSearch('vault')" class="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 cursor-pointer flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-purple-100 text-purple-700 font-bold text-[9px]">DOC</span>
+            <span class="font-semibold text-slate-800">Antz_Media_Master_Services_2026.pdf</span>
+          </div>
+          <span class="text-slate-400 text-[10px]">OCR Indexed</span>
+        </div>
+
+        <div onclick="jumpFromSearch('emails')" class="p-2.5 rounded-xl bg-slate-50 hover:bg-rose-50 border border-slate-100 cursor-pointer flex items-center justify-between">
+          <div class="flex items-center gap-2">
+            <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-700 font-bold text-[9px]">EMAIL</span>
+            <span class="font-semibold text-slate-800">Q4 Renewal Agreement from Rajesh</span>
+          </div>
+          <span class="text-slate-400 text-[10px]">Critical</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: Full Working Interactive Logic & Event Bus -->
+  <!-- ========================================================================= -->
+  <script>
+    // State Variables
+    let currentScreen = 'login';
+    let previousScreen = 'dashboard';
+    let currentWorkspace = 'business';
+    let isWhatsAppEnabled = false;
+    let selectedCountry = { flag: '🇮🇳', dial: '+91', name: 'India' };
+    let currentLanguage = 'en';
+    let isRecording = false;
+    let isTtsPlaying = false;
+    let ttsPlaybackRate = 1.0;
+    let pomodoroInterval = null;
+    let pomodoroSeconds = 25 * 60;
+    let isPomodoroRunning = false;
+    let isCallActive = false;
+    let callTimerInterval = null;
+    let callSeconds = 0;
+
+    // Speech Synthesis Helper (English & Tamil)
+    function speakText(text, lang = 'en-US') {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = lang === 'ta' ? 'ta-IN' : 'en-US';
+        utterance.rate = ttsPlaybackRate || 1.0;
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    // Switch Screens Function
+    function switchScreen(screenId) {
+      if (currentScreen !== screenId) {
+        previousScreen = currentScreen;
+      }
+      currentScreen = screenId;
+      
+      // Hide all screen views
+      document.querySelectorAll('.screen-view').forEach(view => {
+        view.classList.add('hidden');
+      });
+
+      // Show selected screen
+      const target = document.getElementById(`screen-${screenId}`);
+      if (target) {
+        target.classList.remove('hidden');
+        target.scrollTop = 0;
+      }
+
+      // Close 3-dot dropdown and backdrop
+      document.getElementById('three-dot-dropdown').classList.add('hidden');
+      document.getElementById('dropdown-backdrop').classList.add('hidden');
+
+      // Update Bottom Nav Active State
+      document.querySelectorAll('.nav-item').forEach(item => {
+        const navTarget = item.getAttribute('data-nav');
+        if (navTarget === screenId) {
+          item.classList.add('text-white', 'font-bold');
+          item.classList.remove('text-white/80');
+        } else {
+          item.classList.remove('text-white', 'font-bold');
+          item.classList.add('text-white/80');
+        }
+      });
+
+      // Manage In-App Top Header visibility
+      const inAppHeader = document.getElementById('in-app-header');
+      const backBtn = document.getElementById('header-back-btn');
+      const wsSelector = document.getElementById('header-ws-selector');
+      const screenTitle = document.getElementById('header-screen-title');
+
+      if (screenId === 'login' || screenId === 'profile' || screenId === 'phonecall') {
+        inAppHeader.classList.add('hidden');
+      } else {
+        inAppHeader.classList.remove('hidden');
+      }
+
+      // Configure Header content (Back button vs Workspace selector)
+      if (screenId === 'dashboard') {
+        backBtn.classList.add('hidden');
+        wsSelector.classList.remove('hidden');
+        screenTitle.classList.add('hidden');
+      } else {
+        backBtn.classList.remove('hidden');
+        wsSelector.classList.add('hidden');
+        screenTitle.classList.remove('hidden');
+        const titles = {
+          'agents': '10 AI Agents Mesh',
+          'voice': 'Voice Assistant',
+          'calendar': 'Calendar & Tasks',
+          'emails': 'Smart Inbox',
+          'vault': 'Document Vault',
+          'invoices': 'Invoices & Finance',
+          'focus': 'Pomodoro Focus',
+          'marketplace': '10 Workflows',
+          'team': 'Team Collab',
+          'settings': 'Settings & Privacy'
+        };
+        screenTitle.innerText = titles[screenId] || 'Smart Cards';
+      }
+
+      // Adjust status bar styling
+      const statusBar = document.getElementById('status-bar');
+      if (screenId === 'profile') {
+        statusBar.className = 'w-full px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold z-40 select-none text-white bg-crimson-deep transition-colors duration-300 shrink-0';
+      } else if (screenId === 'phonecall') {
+        statusBar.className = 'w-full px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold z-40 select-none text-white bg-slate-950 transition-colors duration-300 shrink-0';
+      } else {
+        statusBar.className = 'w-full px-6 pt-3 pb-1 flex justify-between items-center text-xs font-semibold z-40 select-none text-slate-800 transition-colors duration-300 shrink-0';
+      }
+    }
+
+    // Go Back Handler
+    function goBack() {
+      if (previousScreen && previousScreen !== currentScreen) {
+        switchScreen(previousScreen);
+      } else {
+        switchScreen('dashboard');
+      }
+    }
+
+    // 3-DOT MENU HANDLERS
+    function toggleThreeDotMenu() {
+      const dd = document.getElementById('three-dot-dropdown');
+      const bd = document.getElementById('dropdown-backdrop');
+      const isHidden = dd.classList.contains('hidden');
+      
+      if (isHidden) {
+        dd.classList.remove('hidden');
+        bd.classList.remove('hidden');
+      } else {
+        dd.classList.add('hidden');
+        bd.classList.add('hidden');
+      }
+    }
+
+    function menuJump(screenId) {
+      document.getElementById('three-dot-dropdown').classList.add('hidden');
+      document.getElementById('dropdown-backdrop').classList.add('hidden');
+      switchScreen(screenId);
+      showToast(`Navigated to: ${screenId.toUpperCase()}`);
+    }
+
+    // Workspace Switching Handler (Personal | Work | Business)
+    function setWorkspace(ws) {
+      currentWorkspace = ws;
+      ['personal', 'work', 'business'].forEach(id => {
+        const btn = document.getElementById(`ws-${id}`);
+        if (id === ws) {
+          btn.className = 'px-2 py-0.5 rounded-full bg-crimson-600 text-white shadow-sm transition';
+        } else {
+          btn.className = 'px-2 py-0.5 rounded-full text-slate-600 transition';
+        }
+      });
+
+      const badge = document.getElementById('current-ws-badge');
+      const content = document.getElementById('briefing-content');
+      const metricTasks = document.getElementById('metric-tasks');
+      const metricEmails = document.getElementById('metric-emails');
+
+      if (ws === 'personal') {
+        badge.innerText = 'Personal Workspace';
+        content.innerHTML = '"You have <strong>1 gym routine</strong>, household grocery restock, and 1 electricity bill due this week."';
+        metricTasks.innerText = '2 Tasks';
+        metricEmails.innerText = '0 Actionable';
+        showToast('Switched to Personal Workspace (Private mode)');
+      } else if (ws === 'work') {
+        badge.innerText = 'Work Workspace';
+        content.innerHTML = '"Sprint planning at 5:00 PM. 2 PR reviews pending on GitHub, and 1 client email to review."';
+        metricTasks.innerText = '3 Tasks';
+        metricEmails.innerText = '1 Actionable';
+        showToast('Switched to Work Workspace');
+      } else {
+        badge.innerText = 'Business Workspace';
+        content.innerHTML = '"Antz Media has <strong>3 critical follow-ups</strong>, 1 vendor invoice due Nov 15, and 2 inbound VIP emails awaiting approval."';
+        metricTasks.innerText = '4 Tasks';
+        metricEmails.innerText = '2 Actionable';
+        showToast('Switched to Business Workspace (Antz Media Digital)');
+      }
+    }
+
+    // Toggle WhatsApp Login Switch (Image 1)
+    function toggleWhatsApp() {
+      isWhatsAppEnabled = !isWhatsAppEnabled;
+      const indicator = document.getElementById('toggle-indicator');
+      if (isWhatsAppEnabled) {
+        indicator.classList.remove('bg-slate-300');
+        indicator.classList.add('bg-emerald-500', 'translate-x-1');
+        showToast('WhatsApp instant OTP verification active');
+      } else {
+        indicator.classList.add('bg-slate-300');
+        indicator.classList.remove('bg-emerald-500', 'translate-x-1');
+        showToast('Standard SMS OTP verification active');
+      }
+    }
+
+    function toggleCountryDropdown() {
+      document.getElementById('country-dropdown').classList.toggle('hidden');
+    }
+
+    function selectCountry(flag, dial, name) {
+      selectedCountry = { flag, dial, name };
+      document.getElementById('selected-flag').innerText = flag;
+      document.getElementById('selected-dial').innerText = dial;
+      document.getElementById('country-dropdown').classList.add('hidden');
+      showToast(`Country code updated to ${name} (${dial})`);
+    }
+
+    function triggerLoginOtp() {
+      const mobileVal = document.getElementById('mobile-input').value;
+      document.getElementById('verify-number-display').innerText = `${selectedCountry.dial} ${mobileVal}`;
+      document.getElementById('otp-modal').classList.remove('hidden');
+    }
+
+    function closeOtpModal() {
+      document.getElementById('otp-modal').classList.add('hidden');
+    }
+
+    function completeAuthentication() {
+      closeOtpModal();
+      showToast('2FA Authentication Successful! Welcome, Remakanth');
+      setTimeout(() => {
+        switchScreen('profile');
+      }, 400);
+    }
+
+    function quickDemoLogin() {
+      showToast('Instant Demo Login: Welcome, Remakanth (Antz Media)');
+      switchScreen('profile');
+    }
+
+    // Modal Handlers: Professional Details (Image 2)
+    function openEditProfessionalModal() {
+      document.getElementById('modal-edit-professional').classList.remove('hidden');
+    }
+    function closeEditProfessionalModal() {
+      document.getElementById('modal-edit-professional').classList.add('hidden');
+    }
+    function saveProfessionalDetails() {
+      const org = document.getElementById('input-edit-org').value;
+      const desig = document.getElementById('input-edit-desig').value;
+      document.getElementById('detail-org').innerText = org;
+      document.getElementById('detail-desig').innerText = desig;
+      document.getElementById('card-company-name').innerText = org;
+      document.getElementById('card-person-role').innerText = desig;
+      closeEditProfessionalModal();
+      showToast('Professional details saved to profile & cloud sync!');
+    }
+
+    // Modal Handlers: Address Details (Image 2)
+    function openEditAddressModal() {
+      document.getElementById('modal-edit-address').classList.remove('hidden');
+    }
+    function closeEditAddressModal() {
+      document.getElementById('modal-edit-address').classList.add('hidden');
+    }
+    function saveAddressDetails() {
+      const addr = document.getElementById('input-edit-address').value;
+      document.getElementById('detail-address').innerText = addr;
+      closeEditAddressModal();
+      showToast('Professional address updated!');
+    }
+
+    // Modal Handlers: Share Card (QR / NFC)
+    function openShareCardModal() {
+      document.getElementById('modal-share-card').classList.remove('hidden');
+    }
+    function closeShareCardModal() {
+      document.getElementById('modal-share-card').classList.add('hidden');
+    }
+
+    function triggerPhotoUpload(type) {
+      showToast(`Camera opened: Select new ${type} image to upload`);
+    }
+
+    // Voice Assistant Language Switch (EN / தமிழ்)
+    function setLanguage(lang) {
+      currentLanguage = lang;
+      const btnEn = document.getElementById('lang-en');
+      const btnTa = document.getElementById('lang-ta');
+      const transcript = document.getElementById('stt-transcript');
+      const intentCard = document.getElementById('intent-card');
+
+      if (lang === 'ta') {
+        btnTa.classList.add('bg-crimson-600', 'text-white', 'shadow-sm');
+        btnTa.classList.remove('text-slate-600');
+        btnEn.classList.remove('bg-crimson-600', 'text-white', 'shadow-sm');
+        btnEn.classList.add('text-slate-600');
+        transcript.innerText = '"நாளைக்கு மாலை 5 மணிக்கு ஜிம் ஞாபகப்படுத்து"';
+        intentCard.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold uppercase text-crimson-700">அடையாளம் காணப்பட்ட செயல்</span>
+            <span class="text-[10px] font-semibold text-emerald-600"><i class="fa-solid fa-circle-check"></i> 99% துல்லியம்</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">செயல்</span>
+              <span class="font-bold text-slate-800">நினைவூட்டல் (Gym)</span>
+            </div>
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">நேரம்</span>
+              <span class="font-bold text-slate-800">நாளை 5:00 PM</span>
+            </div>
+          </div>
+        `;
+        showToast('மொழி மாற்றப்பட்டது: தமிழ் (Tamil Voice Mode)');
+        speakText('வணக்கம் ரமாகாந்த். உங்களுக்கு என்ன உதவி வேண்டும்?', 'ta');
+      } else {
+        btnEn.classList.add('bg-crimson-600', 'text-white', 'shadow-sm');
+        btnEn.classList.remove('text-slate-600');
+        btnTa.classList.remove('bg-crimson-600', 'text-white', 'shadow-sm');
+        btnTa.classList.add('text-slate-600');
+        transcript.innerText = '"Remind me to call the customer tomorrow at 10 AM regarding contract review"';
+        intentCard.innerHTML = `
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-[10px] font-bold uppercase text-crimson-700">Identified Intent</span>
+            <span class="text-[10px] font-semibold text-emerald-600"><i class="fa-solid fa-circle-check"></i> 99% Confidence</span>
+          </div>
+          <div class="grid grid-cols-2 gap-2 text-[11px]">
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">Action</span>
+              <span class="font-bold text-slate-800">Task Creation</span>
+            </div>
+            <div class="bg-white p-2 rounded-xl border border-rose-100">
+              <span class="text-[9px] text-slate-400 block">Time</span>
+              <span class="font-bold text-slate-800">Tomorrow 10:00 AM</span>
+            </div>
+          </div>
+        `;
+        showToast('Language switched to English');
+        speakText('Hello Remakanth. How can I help you today?', 'en');
+      }
+    }
+
+    function toggleMicRecording() {
+      isRecording = !isRecording;
+      const micIcon = document.getElementById('mic-icon');
+      const statusText = document.getElementById('voice-status-text');
+
+      if (isRecording) {
+        micIcon.classList.remove('fa-microphone');
+        micIcon.classList.add('fa-stop');
+        statusText.innerText = 'Capturing audio... Speak now';
+        showToast('Microphone active (Permission granted)');
+      } else {
+        micIcon.classList.add('fa-microphone');
+        micIcon.classList.remove('fa-stop');
+        statusText.innerText = 'Processing speech with Whisper AI...';
+        setTimeout(() => {
+          statusText.innerText = 'Listening for command...';
+          showToast('Voice command executed & task saved!');
+        }, 1200);
+      }
+    }
+
+    function simulateVoiceCommand(cmdText) {
+      document.getElementById('stt-transcript').innerText = `"${cmdText}"`;
+      showToast(`Processed: "${cmdText}"`);
+      speakText(`Processed command: ${cmdText}`, currentLanguage);
+    }
+
+    function playMorningBriefing() {
+      showToast('Speaking Operating Briefing audio...');
+      speakText('Good morning Remakanth. You have 3 critical follow-ups today, including submitting the Antz Media report at 2:30 PM, and 2 inbound emails awaiting reply approval.', 'en');
+    }
+
+    function approveAndSendEmail() {
+      showToast('Email reply dispatched via Gmail API! Logged in audit.');
+    }
+
+    function editEmailDraft() {
+      showToast('Draft opened in editor');
+    }
+
+    function simulateUpload() {
+      showToast('Uploading PDF... Vector embedding and OCR extraction in progress.');
+    }
+
+    function toggleDocumentAudio() {
+      isTtsPlaying = !isTtsPlaying;
+      const playIcon = document.getElementById('tts-play-icon');
+      const progressBar = document.getElementById('tts-progress-bar');
+
+      if (isTtsPlaying) {
+        playIcon.classList.remove('fa-play');
+        playIcon.classList.add('fa-pause');
+        progressBar.classList.remove('w-1/3');
+        progressBar.classList.add('w-2/3');
+        showToast(`Text-to-speech playing at ${ttsPlaybackRate}x speed`);
+        speakText('Contract validity till December 31, 2026. SLA guaranteed 99.9% uptime. Payment scheduled bi-monthly on the 15th.', 'en');
+      } else {
+        playIcon.classList.add('fa-play');
+        playIcon.classList.remove('fa-pause');
+        if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+        showToast('Audio playback paused');
+      }
+    }
+
+    function toggleTtsSpeed() {
+      const speeds = [1.0, 1.25, 1.5];
+      const curIdx = speeds.indexOf(ttsPlaybackRate);
+      ttsPlaybackRate = speeds[(curIdx + 1) % speeds.length];
+      document.getElementById('tts-speed-btn').innerText = `${ttsPlaybackRate}x`;
+      showToast(`Audio speed set to ${ttsPlaybackRate}x`);
+    }
+
+    function askDocumentQuestion() {
+      const q = document.getElementById('rag-question-input').value;
+      showToast(`Searching documents for: "${q}"`);
+      document.getElementById('rag-answer-box').classList.remove('hidden');
+    }
+
+    // Modal Handlers: New Task
+    function openNewTaskModal() {
+      document.getElementById('modal-new-task').classList.remove('hidden');
+    }
+    function closeNewTaskModal() {
+      document.getElementById('modal-new-task').classList.add('hidden');
+    }
+    function saveNewTask() {
+      const title = document.getElementById('input-task-title').value || 'New Scheduled Task';
+      const time = document.getElementById('input-task-time').value || '14:00';
+      const priority = document.getElementById('input-task-priority').value;
+      
+      const timeline = document.getElementById('agenda-timeline');
+      const item = document.createElement('div');
+      item.className = 'flex items-start gap-3 relative animate-in fade-in duration-200';
+      item.innerHTML = `
+        <div class="w-7 h-7 rounded-full bg-crimson-600 text-white flex items-center justify-center text-xs shrink-0 z-10 font-bold border border-white shadow-sm">
+          <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="bg-rose-50/70 p-3 rounded-xl border border-rose-200 flex-1">
+          <span class="text-[10px] text-crimson-600 font-bold block">${time} • ${priority} Priority</span>
+          <h5 class="text-xs font-bold text-slate-900 mt-0.5">${title}</h5>
+        </div>
+      `;
+      timeline.appendChild(item);
+      closeNewTaskModal();
+      showToast(`Task "${title}" created and scheduled!`);
+    }
+
+    function selectCalendarDate(day) {
+      document.getElementById('agenda-date-heading').innerText = `October ${day}, 2026 Agenda`;
+      showToast(`Agenda filtered for Oct ${day}`);
+    }
+
+    function toggleTaskDone(checkbox, name) {
+      if (checkbox.checked) {
+        showToast(`Task completed: "${name}" (+10 Points)`);
+      }
+    }
+
+    // Modal Handlers: Invoices
+    function openNewInvoiceModal() {
+      calculateInvoiceGst();
+      document.getElementById('modal-new-invoice').classList.remove('hidden');
+    }
+    function closeNewInvoiceModal() {
+      document.getElementById('modal-new-invoice').classList.add('hidden');
+    }
+    function calculateInvoiceGst() {
+      const base = parseFloat(document.getElementById('input-inv-amount').value) || 0;
+      const cgst = base * 0.09;
+      const sgst = base * 0.09;
+      const total = base + cgst + sgst;
+      document.getElementById('inv-cgst').innerText = `₹ ${cgst.toLocaleString('en-IN')}`;
+      document.getElementById('inv-sgst').innerText = `₹ ${sgst.toLocaleString('en-IN')}`;
+      document.getElementById('inv-total').innerText = `₹ ${total.toLocaleString('en-IN')}`;
+    }
+    function saveNewInvoice() {
+      const client = document.getElementById('input-inv-client').value || 'Client Partner';
+      const base = parseFloat(document.getElementById('input-inv-amount').value) || 0;
+      const total = base * 1.18;
+      const invNum = '#INV-2026-' + Math.floor(100 + Math.random() * 900);
+
+      const list = document.getElementById('invoices-list');
+      const card = document.createElement('div');
+      card.className = 'p-3 rounded-xl bg-slate-50 border border-slate-100 animate-in fade-in duration-200';
+      card.innerHTML = `
+        <div class="flex items-center justify-between mb-1">
+          <span class="text-xs font-bold text-slate-900">${invNum}</span>
+          <span class="bg-amber-100 text-amber-700 font-bold text-[9px] px-2 py-0.5 rounded-full">Created</span>
+        </div>
+        <div class="flex items-center justify-between text-xs text-slate-600 mb-2">
+          <span>Client: ${client}</span>
+          <span class="font-extrabold text-slate-900">₹ ${total.toLocaleString('en-IN')}</span>
+        </div>
+        <div class="flex items-center gap-2 pt-1 border-t border-slate-200 text-[10px]">
+          <button onclick="showToast('Invoice PDF generated')" class="text-blue-600 font-semibold hover:underline"><i class="fa-solid fa-download"></i> PDF</button>
+          <button onclick="showToast('Invoice dispatched via WhatsApp')" class="text-emerald-600 font-semibold hover:underline"><i class="fa-brands fa-whatsapp"></i> WhatsApp</button>
+        </div>
+      `;
+      list.prepend(card);
+      closeNewInvoiceModal();
+      showToast(`Invoice ${invNum} generated with 18% GST!`);
+    }
+
+    // Modal Handlers: AI Agent Simulation Runner
+    function runAgentSimulation(agentName) {
+      document.getElementById('agent-runner-title').innerText = `${agentName} Execution`;
+      document.getElementById('modal-agent-runner').classList.remove('hidden');
+      
+      const s1 = document.getElementById('agent-step-1');
+      const s2 = document.getElementById('agent-step-2');
+      const s3 = document.getElementById('agent-step-3');
+      const s4 = document.getElementById('agent-step-4');
+
+      s1.classList.add('hidden');
+      s2.classList.add('hidden');
+      s3.classList.add('hidden');
+      s4.classList.add('hidden');
+
+      setTimeout(() => s1.classList.remove('hidden'), 300);
+      setTimeout(() => s2.classList.remove('hidden'), 800);
+      setTimeout(() => s3.classList.remove('hidden'), 1300);
+      setTimeout(() => {
+        s4.classList.remove('hidden');
+        showToast(`${agentName} executed successfully!`);
+      }, 1800);
+    }
+    function closeAgentRunner() {
+      document.getElementById('modal-agent-runner').classList.add('hidden');
+    }
+
+    // Workflow Trigger
+    function triggerWorkflow(wfName) {
+      showToast(`Pipeline active: "${wfName}" dispatched!`);
+    }
+
+    // Pomodoro Timer Controls
+    function togglePomodoro() {
+      isPomodoroRunning = !isPomodoroRunning;
+      const btnIcon = document.getElementById('pomodoro-icon');
+      if (isPomodoroRunning) {
+        btnIcon.classList.remove('fa-play');
+        btnIcon.classList.add('fa-pause');
+        showToast('Focus session started (25:00)');
+        pomodoroInterval = setInterval(() => {
+          if (pomodoroSeconds > 0) {
+            pomodoroSeconds--;
+            const mins = Math.floor(pomodoroSeconds / 60);
+            const secs = pomodoroSeconds % 60;
+            document.getElementById('pomodoro-timer-display').innerText = 
+              `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+          } else {
+            clearInterval(pomodoroInterval);
+            showToast('Pomodoro focus complete! Take a 5-minute break.');
+          }
+        }, 1000);
+      } else {
+        btnIcon.classList.remove('fa-pause');
+        btnIcon.classList.add('fa-play');
+        clearInterval(pomodoroInterval);
+        showToast('Focus session paused');
+      }
+    }
+
+    function resetPomodoro() {
+      clearInterval(pomodoroInterval);
+      isPomodoroRunning = false;
+      pomodoroSeconds = 25 * 60;
+      document.getElementById('pomodoro-timer-display').innerText = '25:00';
+      document.getElementById('pomodoro-icon').className = 'fa-solid fa-play';
+      showToast('Timer reset to 25:00');
+    }
+
+    // Telephony Call Handlers
+    function triggerSimulatedPhoneCall() {
+      switchScreen('phonecall');
+      document.getElementById('call-timer').innerText = 'Ringing...';
+      isCallActive = false;
+      showToast('Incoming automated call simulation active');
+    }
+
+    function answerSimulatedCall() {
+      isCallActive = true;
+      callSeconds = 0;
+      document.getElementById('call-timer').innerText = '00:01';
+      callTimerInterval = setInterval(() => {
+        callSeconds++;
+        const mins = Math.floor(callSeconds / 60);
+        const secs = callSeconds % 60;
+        document.getElementById('call-timer').innerText = 
+          `${mins < 10 ? '0' + mins : mins}:${secs < 10 ? '0' + secs : secs}`;
+      }, 1000);
+      showToast('Call connected. Speaking automated alert...');
+      speakText('Hello Remakanth, this is your Smart Cards automated assistant. Reminder: Submit Antz Media Quarterly Financials is scheduled for today at 2:30 PM.', 'en');
+    }
+
+    function endSimulatedCall() {
+      if (callTimerInterval) clearInterval(callTimerInterval);
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      showToast('Call ended');
+      switchScreen('dashboard');
+    }
+
+    // Universal Search Handlers
+    function openUniversalSearch() {
+      document.getElementById('universal-search-modal').classList.remove('hidden');
+      document.getElementById('universal-search-input').focus();
+    }
+
+    function closeUniversalSearch() {
+      document.getElementById('universal-search-modal').classList.add('hidden');
+    }
+
+    function jumpFromSearch(screenId) {
+      closeUniversalSearch();
+      switchScreen(screenId);
+    }
+
+    function filterUniversalSearch(val) {
+      // Dynamic filtering simulation
+    }
+
+    // Global Toast Banner
+    function showToast(message) {
+      const toast = document.getElementById('toast-banner');
+      const msg = document.getElementById('toast-msg');
+      msg.innerText = message;
+      toast.classList.remove('hidden');
+      setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+
+    // Clock Updater
+    function updateClock() {
+      const now = new Date();
+      let hours = now.getHours();
+      let minutes = now.getMinutes();
+      minutes = minutes < 10 ? '0' + minutes : minutes;
+      document.getElementById('current-time').innerText = `${hours}:${minutes}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Keyboard Shortcuts (Ctrl+K for search)
+    window.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openUniversalSearch();
+      }
+      if (e.key === 'Escape') {
+        document.getElementById('three-dot-dropdown').classList.add('hidden');
+        document.getElementById('dropdown-backdrop').classList.add('hidden');
+        closeUniversalSearch();
+        closeEditProfessionalModal();
+        closeEditAddressModal();
+        closeShareCardModal();
+        closeNewTaskModal();
+        closeNewInvoiceModal();
+        closeAgentRunner();
+      }
+    });
+  </script>
+</body>
+</html>
